@@ -1,0 +1,98 @@
+.cent {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.form-card {
+    padding: 20px;
+}
+
+.cart-item {
+    margin: -18px;
+}
+
+.top-pad {
+    height: 40px;
+}
+
+.list-icon {
+    width: 70px;
+    height: 60px;
+    margin-left: -28px;
+    margin-top: -22px;
+    margin-bottom: -22px;
+    margin-right: 10px;
+
+}
+
+.list-head {
+    margin-top: -10px;
+    margin-bottom: -10px;
+    padding: -10px;
+}
+
+.logo {
+    margin-top: -22px;
+    margin-bottom: -22px;
+    height: 52px;
+}
+.menu-item {
+    margin-right: 1em;
+}
+.menu-text {
+    font-size: 1em;
+}
+.footer-img {
+    height: 35px;
+}
+.product-icon {
+    width: 62px;
+    height: 62px;
+}
+.product-title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.product-img {
+    margin: -15px;
+}
+
+.product-content {
+    margin: 10px;
+}
+.product-badge {
+  position: absolute;
+  top: -20px;
+  right: 30px;
+  line-height: 10px;
+  padding: 4px 6px;
+  margin: 15px -8px 0px 0px; 
+}
+
+.water {
+    background-color: #2ac9ff
+}
+.leaf {
+    background-color: #7bd52a
+}
+.note-pad {
+    border-radius: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
