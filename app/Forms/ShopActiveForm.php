@@ -23,7 +23,7 @@ class ShopActiveForm extends Form
             $this
             ->add($org->id, 'url', [
                 'label' => $org->name,
-                'rules' => 'min:2|max:100',
+                'rules' => 'min:2|max:200',
             ]);
         }
 

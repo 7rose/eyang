@@ -24,6 +24,7 @@ class ShopsTableSeeder extends Seeder
             'level' => 1,
             'domain' => 'eyang.xyz',
             'info' => '{
+                "limit":20,
                 "name":"亿羊",
                 "full_name":"亿羊金融信息",
                 "color":"pink",
@@ -54,6 +55,18 @@ class ShopsTableSeeder extends Seeder
                 "full_name":"红牛贷",
                 "color":"red",
                 "wechat":"https://u.wechat.com/MNVZKdzHjyyiNuaerhCpBxc"
+            }',
+        ]);
+
+        Shop::create([
+            'parent_id' => 1,
+            'level' => 1,
+            'domain' => 'mmdai.xyz',
+            'info' => '{
+                "name":"猫咪",
+                "full_name":"猫咪贷",
+                "color":"orange",
+                "wechat":"https://u.wechat.com/ENjAf5xmzHilN6IABEKJnd8"
             }',
         ]);
 

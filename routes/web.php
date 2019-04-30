@@ -29,7 +29,6 @@ Route::group(['middleware' => ['login', 'state']], function () {
     Route::post('/shops/active/do', 'ShopController@doActive');
 
     // 用户
-    Route::get('/clear_note', 'UserController@clearNote'); # 清除显示面板
     Route::get('/users/lock/{id}', 'UserController@lock');
     Route::get('/users/unlock/{id}', 'UserController@unlock');
     Route::get('/password_reset', 'UserController@passwordReset');
@@ -47,22 +46,6 @@ Route::group(['middleware' => ['login', 'state']], function () {
 
 Route::get('/test', function() {
     // abort('403');
-    $a = new App\Helpers\Info;
-   $b = $a->lackOrgIds();
-
-   print_r($b);
-
-   // foreach ($b as $key) {
-   //     echo $key->name.'<br>';
-   // }
-
-   // if($b){
-   //  echo "yes";
-   // }else{
-   //  echo "fuck";
-   // }
-   // echo $b;
-
 });
 
 

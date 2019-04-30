@@ -10,7 +10,9 @@ use Auth;
 use App\Forms\ProductForm;
 use App\Product;
 use App\Conf;
+use App\Org;
 use App\Helpers\Info;
+use App\Helpers\Link;
 
 class ProductController extends Controller
 {
@@ -71,7 +73,7 @@ class ProductController extends Controller
      * 验证
      *
      */
-    public function store(Request $request)
+    public function store(Request $request, Link $link)
     {
         $exists = Product::where('name', $request->name)
                         ->first();
@@ -82,7 +84,20 @@ class ProductController extends Controller
         $new = $request->all();
         $new['created_by'] = Auth::id();
 
+        $product_code = $link->getProductCode(intval($request->org_id), $request->url);
+
+        if(!$product_code) abort('403');
+
+        $org = Org::findOrFail($request->org_id);
+
+        $new['config->'.$org->code] = $product_code;
+
         $record = Product::create($new);
+
+        // $record->update([
+        //     'config->'.$org->code => $product_code,
+        // ]);
+
 
         return view('img', compact('record'));
 

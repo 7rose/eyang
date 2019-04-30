@@ -14,7 +14,7 @@ use App\Org;
  */
 class Info
 {
-    private $shop;
+    public $shop;
     private $info;
     private $config;
     
@@ -22,7 +22,8 @@ class Info
     {
         // $fake = "szdai.xyz";
         // $fake = "redniu.top";
-        $fake = "eyang.xyz";
+        // $fake = "eyang.xyz";
+        $fake = "mmdai.xyz";
 
         $domain = config('app.env') == 'production' ? $_SERVER['HTTP_HOST'] : $fake;
 

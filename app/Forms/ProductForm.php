@@ -40,7 +40,7 @@ class ProductForm extends Form
 
         ->add('url', 'url', [
                 'label' => "链接",
-                'rules' => 'required|min:6|max:50',
+                'rules' => 'required|min:6|max:200',
             ])
         ->add('zm', 'number', [
                 'label' => "芝麻分要求",

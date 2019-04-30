@@ -36,11 +36,21 @@ class UsersTableSeeder extends Seeder
 
         User::create([
             'shop_id' => 4,
-            'name' => 'Dianna',
+            'name' => 'Ruby',
             'mobile' => '1156363889',
             'password' => bcrypt('000000'),
             'auth' => '{
                 "issuer":true,
+                "boss":true
+            }',
+        ]);
+
+        User::create([
+            'shop_id' => 5,
+            'name' => 'Emily',
+            'mobile' => '2505524302',
+            'password' => bcrypt('000000'),
+            'auth' => '{
                 "boss":true
             }',
         ]);

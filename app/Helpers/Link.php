@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Str;
+use StringTemplate\Engine;
 
 use App\Org;
 use App\Shop;
@@ -14,6 +15,45 @@ use App\Helpers\Info;
  */
 class Link
 {
+    /**
+     * 生成链接
+     *
+     */
+    public function link($product)
+    {
+        $info = new Info;
+        $shop = $info->shop;
+
+        $tag = $product->org->code;
+
+        $shop_code = $this->getCode($shop->config, $tag);
+        $product_code = $this->getCode($product->config, $tag);
+
+        $templet = $this->getCode($product->org->config, 'templet');
+
+        if(!$shop_code || !$product_code || !$templet) return false;
+
+        $engine = new Engine;
+
+        $link = $engine->render($templet, ['shop' => $shop_code, 'product' => $product_code]);
+
+        return $link;
+    }
+
+    /**
+     * 获取josn配置
+     *
+     */
+    public function getCode($json, $key)
+    {
+        $jc = collect(json_decode($json));
+
+        if(!$jc->count()) return false;
+        if(!$jc->has($key)) return false;
+
+        return $jc[$key];
+    }
+
 
     /**
      * 更新数据库信息
@@ -143,10 +183,18 @@ class Link
     }
 
     /**
+     * 报备产品
+     *
+     */
+    public function mustFinish($product)
+    {
+        return $product->org->code == 'rzd';
+    }
+
+    /**
      *
      *
      */
-
 }
 
 

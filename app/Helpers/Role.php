@@ -140,8 +140,6 @@ class Role
      */
     public function shopBoss($shop_id=0)
     {
-        // return $this->shop->id == Auth::user()->shop->id;
-        // $info = new Info;
         return Auth::user()->shop_id == $shop_id && $this->boss();
     }
 
