@@ -20,10 +20,12 @@ class Info
     
     function __construct()
     {
-        // $fake = "szdai.xyz";
+        $fake = "szdai.xyz";
         // $fake = "redniu.top";
-        $fake = "eyang.xyz";
+        // $fake = "eyang.xyz";
         // $fake = "mmdai.xyz";
+        // $fake = "joydai.xyz";
+        // $fake = "ytdai.xyz";
 
         $domain = config('app.env') == 'production' ? $_SERVER['HTTP_HOST'] : $fake;
 

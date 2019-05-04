@@ -6,6 +6,7 @@ use Auth;
 
 use App\User;
 use App\Org;
+use App\Shop;
 use App\Helpers\Info;
 
 
@@ -122,6 +123,16 @@ class Role
     }
 
     /**
+     * 
+     *
+     */
+    public function sameShop($id)
+    {
+        $target = User::findOrFail($id);
+        return Auth::user()->shop_id == $target->shop_id;
+    }
+
+    /**
      * grater than : 有权
      *
      */
@@ -130,16 +141,26 @@ class Role
         if($this->root() && !$this->root($id)) return true;
         if($this->admin() && !$this->admin($id)) return true;
         if($this->manager() && !$this->manager($id)) return true;
+        if($this->boss() && !$this->manager($id) && !$this->boss($id) && $this->sameShop($id) && !$this->self($id)) return true;
+
         return false;
     }
 
     /**
-     * 提示设置账号
+     * 店主
      *
      */
     public function shopBoss($shop_id=0)
     {
-        return Auth::user()->shop_id == $shop_id && $this->boss();
+        $info = new Info;
+
+        if($shop_id == 0) $shop_id = $info->id();
+        if(Auth::user()->shop_id == $shop_id && $this->boss()) return true;
+
+        $shop = Shop::findOrFail($shop_id);
+        if(Auth::user()->shop_id == $shop->upper->id && $this->boss()) return true;
+
+        return false;
     }
 
 }

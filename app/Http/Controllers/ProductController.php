@@ -13,6 +13,7 @@ use App\Conf;
 use App\Org;
 use App\Helpers\Info;
 use App\Helpers\Link;
+use App\Helpers\Role;
 
 class ProductController extends Controller
 {
@@ -56,8 +57,10 @@ class ProductController extends Controller
      * 新产品
      *
      */
-    public function create()
+    public function create(Role $role)
     {
+        if(!$role->admin() && !$role->issuer()) abort(403);
+
          $form = $this->form(ProductForm::class, [
             'method' => 'POST',
             'url' => '/products/store'
@@ -73,8 +76,10 @@ class ProductController extends Controller
      * 验证
      *
      */
-    public function store(Request $request, Link $link)
+    public function store(Request $request, Link $link, Role $role)
     {
+        if(!$role->admin() && !$role->issuer()) abort(403);
+
         $exists = Product::where('name', $request->name)
                         ->first();
 
@@ -107,9 +112,9 @@ class ProductController extends Controller
      * 图片
      *
      */
-    public function imgStore(Request $request)
+    public function imgStore(Request $request, Role $role)
     {
-        // if(!$role->admin()) abort(403);
+        if(!$role->admin() && !$role->issuer()) abort(403);
         
         $img = $request->file('avatar');
         $id = $request->id;
@@ -133,9 +138,9 @@ class ProductController extends Controller
      * edit
      *
      */
-    public function edit($id)
+    public function edit($id, Role $role)
     {
-        // if(!$role->admin()) abort(403);
+        if(!$role->admin() && !$role->issuer()) abort(403);
 
         $record = Product::findOrFail($id);
 
@@ -156,9 +161,9 @@ class ProductController extends Controller
      * update
      *
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, Role $role)
     {
-        // if(!$role->admin()) abort(403);
+        if(!$role->admin() && !$role->issuer()) abort(403);
 
         $all = $request->all();
 
@@ -173,8 +178,10 @@ class ProductController extends Controller
      * 放水
      *
      */
-    public function fs($id)
+    public function fs($id, Role $role)
     {
+        if(!$role->admin() && !$role->issuer()) abort(403);
+
        $target = Product::findOrFail($id);
        $target->update([
             'fs' => true,
@@ -186,8 +193,10 @@ class ProductController extends Controller
      * 放水
      *
      */
-    public function unfs($id)
+    public function unfs($id, Role $role)
     {
+        if(!$role->admin() && !$role->issuer()) abort(403);
+
         $target = Product::findOrFail($id);
         $target->update([
             'fs' => false,

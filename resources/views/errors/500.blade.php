@@ -9,7 +9,7 @@
         <div class="col-sm-5 cent">
           <div class="alert alert-danger">
               <h1><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></h1>
-              No Response From Servers
+              服务器无响应
           </div>
         </div>
     </div>

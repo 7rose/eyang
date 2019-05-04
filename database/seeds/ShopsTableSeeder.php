@@ -28,8 +28,7 @@ class ShopsTableSeeder extends Seeder
                 "name":"亿羊",
                 "full_name":"亿羊金融信息",
                 "color":"pink",
-                "wechat":"https://u.wechat.com/MBhVcfhbK4EfzpcGFyrniZ4",
-                "qq":"2402856790"
+                "wechat":"https://u.wechat.com/MBhVcfhbK4EfzpcGFyrniZ4"
             }'
         ]);
 
@@ -41,8 +40,7 @@ class ShopsTableSeeder extends Seeder
                 "name":"山竹",
                 "full_name":"山竹贷",
                 "color":"violet",
-                "wechat":"https://u.wechat.com/MBhVcfhbK4EfzpcGFyrniZ4",
-                "qq":"2402856790"
+                "wechat":"https://u.wechat.com/MBhVcfhbK4EfzpcGFyrniZ4"
             }',
         ]);
 

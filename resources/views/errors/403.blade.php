@@ -9,7 +9,7 @@
         <div class="col-sm-5 cent">
           <div class="alert alert-warning">
               <h1><i class="fa fa-ban" aria-hidden="true"></i></h1>
-              Forbidden
+              无权操作
           </div>
         </div>
     </div>

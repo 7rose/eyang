@@ -9,7 +9,7 @@
         <div class="col-sm-5 cent">
           <div class="alert alert-danger">
               <h1><i class="fa fa-fire" aria-hidden="true"></i></h1>
-              Not Found
+              页面未找到
           </div>
         </div>
     </div>

@@ -28,6 +28,8 @@ Route::group(['middleware' => ['login', 'state']], function () {
     Route::get('/shops', 'ShopController@index');
     Route::get('/shops/active', 'ShopController@active');
     Route::post('/shops/active/do', 'ShopController@doActive');
+    Route::get('/shops/create/{parent_id}', 'ShopController@create');
+    Route::post('/shops/store/{parent_id}', 'ShopController@store');
 
     // 订单
     Route::get('/orders', 'OrderController@index');

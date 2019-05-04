@@ -2,47 +2,52 @@
     $p = new App\Helpers\Picker;
     $info = new App\Helpers\Info;
     $f = new App\Helpers\Filter;
+    $r = new App\Helpers\Role;
 
 ?>
 @extends('../nav')
 
 @section('content')
 
-
 <div class="row top-pad"></div>
 <section>
     <div class="container">
-        <h3><i class="fa fa-bookmark-o" aria-hidden="true"></i> 店面</h3>
-        <p><a href="/shops/create/1" class="btn btn-outline-primary btn-sm">+ 增加 </a></p>
+        <h3><i class="fa fa-bookmark-o" aria-hidden="true"></i> 店和用户</h3>
+        <p>
+          @if($r->admin())
+            <a href="/shops/create/1" class="btn btn-outline-primary btn-sm">+ 增加 </a>
+          @endif
+        </p>
         <div class="card">
           <div class="card-body">
-              @if(isset($records) && count($records))
-                <ul class="list-unstyled">
-                @foreach($records as $level_1)
-                  <li>
-                    <a href="javascript:edit({{$level_1->id}})">
-                      <strong><i class="fa fa-bookmark" aria-hidden="true"></i> {{ $level_1->domain }} [{{ $f->show($level_1->info, 'name') }}]</strong>
-                    </a> 
-                    <a href="/shops/create/{{ $level_1->id }}" class="badge badge-success"> + 分店</a>
-                    @if(count($level_1->users))
-                      <ul class="list-unstyled">
-                          @foreach($level_1->users as $u1)
-                            <li><small><i class="fa fa-user-o" aria-hidden="true"></i> {{ $u1->name }}</small></li>
-                          @endforeach
-                      </ul>
-                      @endif
-                    @if(count($level_1->subs))
-                    <ul class="list-unstyled">
-                      @foreach($level_1->subs as $level_2)
-                        <li>&nbsp <i class="fa fa-angle-right" aria-hidden="true"></i> <a href="javascript:edit({{$level_2->id}})"><strong>{{ $level_2->domain }} [{{ $f->show($level_2->info, 'name') }}]</strong></a> 
+              @if(isset($record))
+                <img src="{{ asset('img/'.$info->domain().'.svg') }}" alt="" class="img-fluid order-icon">
+                <p class="text-primary">
+                  <strong>{{ $f->show($record->info, 'name') }}</strong> {{ $record->domain }} 
+                  @if($r->admin())
+                  <a href="/shops/create/{{$record->id}}" class="btn btn-outline-primary btn-sm">+ 增加 </a>
+                  @endif
+                </p>
+                @if($record->users->count())
+                  <ul class="list-unstyled">
+                  @foreach($record->users as $u)
+                    
+                    <li class="text-{{ $r->locked($u->id) ? 'warning' : 'dark' }}">
+                      {{ $u->mobile }} 
+                      {{$u->name}} 
+                      {!! $r->boss($u->id) ? '<span class="badge badge-primary">店主</span>' :"" !!} 
 
-                        </li>
-                      @endforeach
-                    </ul>
-                    @endif
-                  <li>
-                @endforeach
-                </ul>
+                      @if($r->locked($u->id))
+                        {!! $r->gt($u->id) ? '<a class="badge badge-success" href="/users/unlock/'.$u->id.'"><i class="fa fa-unlock" aria-hidden="true"></i></a>' : '' !!}
+                      @else
+                        {!! $r->gt($u->id) ? '<a class="badge badge-warning" href="/users/lock/'.$u->id.'"><i class="fa fa-lock" aria-hidden="true"></i></a>' : '' !!}
+                      @endif
+
+                    </li>
+                    
+                  @endforeach
+                  </ul>
+                @endif
               @else
                 <div class="alert alert-info">尚无记录</div>
               @endif

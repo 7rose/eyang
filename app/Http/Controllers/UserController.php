@@ -158,20 +158,18 @@ class UserController extends Controller
     }
 
     // lock 锁定
-    public function lock($id)
+    public function lock($id, Role $role)
     {
-        // $r = new Role;
-        // if(!$r->higher($id)) abort('403');
+        if(!$role->gt($id)) abort('403');
 
         User::findOrFail($id)->update(['auth->locked' => true]);
         return redirect()->back();
     }
 
     // lock 解锁
-    public function unlock($id)
+    public function unlock($id, Role $role)
     {
-        // $r = new Role;
-        // if(!$r->higher($id)) abort('403');
+        if(!$role->gt($id)) abort('403');
 
         User::findOrFail($id)->update(['auth->locked' => false]);
         return redirect()->back();

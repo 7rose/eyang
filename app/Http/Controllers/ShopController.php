@@ -9,7 +9,10 @@ use Session;
 
 use App\Shop;
 use App\Forms\ShopActiveForm;
+use App\Forms\ShopForm;
 use App\Helpers\Link;
+use App\Helpers\Info;
+use App\Helpers\Role;
 
 class ShopController extends Controller
 {
@@ -19,25 +22,23 @@ class ShopController extends Controller
      * 列表
      *
      */
-    public function index()
+    public function index(Info $info, Role $role)
     {
-        $records = Shop::where('level',  1)
-                        ->get();
+        if(!$role->admin() && !$role->shopBoss()) abort(403);
 
+        $record = $info->shop;
 
-        // foreach ($records as $k) {
-        //     echo $k->upper->domain;
-        // }
-
-        return view('shops.shops', compact('records'));
+        return view('shops.shops', compact('record'));
     }
 
     /**
      * 激活表单
      *
      */
-    public function active()
+    public function active(Role $role)
     {
+        if(!$role->admin() && !$role->shopBoss()) abort(403);
+
          $form = $this->form(ShopActiveForm::class, [
             'method' => 'POST',
             'url' => '/shops/active/do'
@@ -53,8 +54,10 @@ class ShopController extends Controller
      * 激活
      *
      */
-    public function doActive(Request $request, Link $link)
+    public function doActive(Request $request, Link $link, Role $role)
     {
+        if(!$role->admin() && !$role->shopBoss()) abort(403);
+        
         $all = $request->all();
         Arr::forget($all, '_token');
 
@@ -84,6 +87,62 @@ class ShopController extends Controller
         return view('note', compact('color', 'icon', 'text'));
     }
 
+
+    /**
+     * 新建
+     *
+     */
+    public function create($parent_id, Role $role)
+    {
+        if(!$role->admin()) abort(403);
+
+         $form = $this->form(ShopForm::class, [
+            'method' => 'POST',
+            'url' => '/shops/store/'.$parent_id
+        ]);
+
+        $title = '新店';
+        $icon = 'bank';
+
+        return view('form', compact('form','title','icon'));
+    }
+
+    /**
+     * 保存
+     *
+     */
+    public function store($parent_id, Role $role, Request $request)
+    {
+        if(!$role->admin()) abort(403);
+
+        $info = [
+            'name' => $request->name,
+            'full_name' => $request->full_name,
+            'color' => $request->color,
+            'wechat' => $request->wechat,
+        ];
+
+        $parent = Shop::findOrFail($parent_id);
+        $level = $parent->level + 1;
+
+        if($request->limit && $level == 1) $info['limit'] = $request->limit;
+
+        $new = [
+            'parent_id' => $parent_id,
+            'level' => $level,
+            'domain' => $request->domain,
+            'info' => json_encode($info)
+        ];
+
+        Shop::create($new);
+
+        $color = 'success';
+        $icon = 'check-square-o';
+        $text = '店新建成功!';
+
+        return view('note', compact('color', 'icon', 'text'));
+
+    }
 
 
 
