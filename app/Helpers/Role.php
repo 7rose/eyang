@@ -26,7 +26,6 @@ class Role
             return null;
             exit();
         }
-
     }
 
     // 存在并且为为true

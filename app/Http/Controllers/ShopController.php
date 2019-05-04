@@ -7,12 +7,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Session;
 
+use App\Shop;
 use App\Forms\ShopActiveForm;
 use App\Helpers\Link;
 
 class ShopController extends Controller
 {
     use FormBuilderTrait;
+
+    /**
+     * 列表
+     *
+     */
+    public function index()
+    {
+        $records = Shop::where('level',  1)
+                        ->get();
+
+
+        // foreach ($records as $k) {
+        //     echo $k->upper->domain;
+        // }
+
+        return view('shops.shops', compact('records'));
+    }
 
     /**
      * 激活表单

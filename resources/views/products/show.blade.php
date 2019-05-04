@@ -1,6 +1,8 @@
 <?php
     $p = new App\Helpers\Picker;
     $link = new App\Helpers\Link;
+    $r = new App\Helpers\Role;
+
 ?>
 
 @extends('../nav')
@@ -24,9 +26,19 @@
                     <span class="badge badge-dark">芝麻分 ≥ {{ $record->zm }}</span>
                     <span class="badge badge-dark">实名手机号6个月以上</span><br>
 
+                @if($r->issuer())
+                    @if($record->fs)
+                        <a href="/products/unfs/{{ $record->id }}" class="badge text-white water"><i class="fa fa-shower" aria-hidden="true"></i> 正在放水!</a>
+                    @else
+                        <a href="/products/fs/{{ $record->id }}" class="badge badge-light"><i class="fa fa-shower" aria-hidden="true"></i> 还没放水</a>
+                    @endif
+                @else
                     @if($record->fs)
                         <span class="badge text-white water"><i class="fa fa-shower" aria-hidden="true"></i> 正在放水!</span>
                     @endif
+                @endif
+
+
                     @if($p->fresh($record->id))
                         <span class="badge text-white leaf"><i class="fa fa-leaf" aria-hidden="true"></i> 新品</span>
                     @endif

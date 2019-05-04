@@ -78,6 +78,13 @@
 .note-pad {
     border-radius: 0px;
 }
+.list-pad {
+    padding-top: 8px;
+}
+.order-icon {
+    width: 28px;
+    height:28px;
+}
 
 
 

@@ -31,6 +31,17 @@ class Picker
         return $end->gt(now());
     }
 
+    /**
+     * 过期时间
+     *
+     */
+    public function orderValid($record)
+    {
+        $end = $record->created_at->startOfDay()->addHours(21.5);
+
+        return $end->gt(now()) ? $end->diffForHumans() : false;
+    }
+
 
     /**
      * 

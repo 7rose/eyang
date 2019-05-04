@@ -25,8 +25,16 @@ Route::get('/logout', 'UserController@logout');
 Route::group(['middleware' => ['login', 'state']], function () {
 
     // 店
+    Route::get('/shops', 'ShopController@index');
     Route::get('/shops/active', 'ShopController@active');
     Route::post('/shops/active/do', 'ShopController@doActive');
+
+    // 订单
+    Route::get('/orders', 'OrderController@index');
+    Route::get('/orders/create', 'OrderController@create');
+    Route::post('/orders/store', 'OrderController@store');
+    Route::post('/orders/bb', 'OrderController@bb'); # 报备
+    Route::get('/orders/bb/fail/{id}', 'OrderController@bbFailStore'); # 报备失败
 
     // 用户
     Route::get('/users/lock/{id}', 'UserController@lock');
@@ -40,12 +48,28 @@ Route::group(['middleware' => ['login', 'state']], function () {
     Route::post('/products/img/store', 'ProductController@imgStore');
     Route::get('/products/edit/{id}', 'ProductController@edit');
     Route::post('/products/update/{id}', 'ProductController@update');
+    Route::get('/products/fs/{id}', 'ProductController@fs'); # 放水
+    Route::get('/products/unfs/{id}', 'ProductController@unfs'); # 放水
 
 });
 
 
 Route::get('/test', function() {
-    // abort('403');
+    $my_shop = Auth::user()->shop;
+    // $th = $my_shop->pluck('domain', 'id')->toArray();
+    $subs = $my_shop->subs->pluck('domain', 'id')->toArray();
+
+    $subs = array_add($subs, $my_shop->id, $my_shop->domain);
+    print_r($subs);
+    // $shops = Auth::user()->shop->pluck('domain', 'id')->toArray();
+    // echo $shops;
+    // print_r($shops);
+
+        // if(Auth::user()->shop->subs->count()) {
+        //     $subs = Auth::user()->shop->subs->pluck('domain', 'id')->toArray();
+        //     array_push($shops, $sub);
+        // }
+
 });
 
 

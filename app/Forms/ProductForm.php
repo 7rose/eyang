@@ -52,10 +52,10 @@ class ProductForm extends Form
                 'label' => "正在放水!",
                 'checked' => false
             ])
-        ->add('content', 'textarea', [
-                'label' => "备注",
-                'rules' => 'min:6|max:200',
-            ])
+        // ->add('content', 'textarea', [
+        //         'label' => "备注",
+        //         'rules' => 'min:6|max:200',
+        //     ])
         ->add('submit','submit',[
             'label' => '下一步',
             'attr' => ['class' => 'btn btn-primary btn-block']

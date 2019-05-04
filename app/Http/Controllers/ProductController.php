@@ -78,7 +78,7 @@ class ProductController extends Controller
         $exists = Product::where('name', $request->name)
                         ->first();
 
-        if($exists) return redirect()->back()->withErrors(['name'=>'此名称已存在!'])->withInput();
+        if($exists) return redirect()->back()->withErrors(['name'=>'此产品名称已存在!'])->withInput();
 
 
         $new = $request->all();
@@ -168,6 +168,37 @@ class ProductController extends Controller
 
         return view('img', compact('record'));
     }
+
+    /**
+     * 放水
+     *
+     */
+    public function fs($id)
+    {
+       $target = Product::findOrFail($id);
+       $target->update([
+            'fs' => true,
+       ]);
+       return redirect()->back();
+    }
+
+    /**
+     * 放水
+     *
+     */
+    public function unfs($id)
+    {
+        $target = Product::findOrFail($id);
+        $target->update([
+            'fs' => false,
+        ]);
+        return redirect()->back();
+    }
+
+    /**
+     * 
+     *
+     */
 }
 
 
