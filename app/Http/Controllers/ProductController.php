@@ -20,21 +20,30 @@ class ProductController extends Controller
     use FormBuilderTrait;
 
     private $info;
+    private $role;
 
-    public function index(Info $info)
+    public function index(Info $info, Role $role)
     {
         $this->info = $info;
+        $this->role = $role;
 
         $records = Conf::where('key', 'product_type')
                         ->whereHas('products', function($q1){
                             $q1->whereNotNull('img');
                             $q1->whereNotIn('org_id', $this->info->lackOrgIds());
-                            $q1->where('show', true);
+
+                            if(!$this->role->issuer()) {
+                                $q1->where('show', true);
+                            }
                         })
                         ->with(['products' => function($query){
                             $query->whereNotNull('img');
                             $query->whereNotIn('org_id', $this->info->lackOrgIds());
-                            $query->where('show', true);
+
+                            if(!$this->role->issuer()) {
+                                $query->where('show', true);
+                            }
+
                             $query->orderBy('fs','desc');
                             $query->latest();
                         }])
@@ -200,6 +209,36 @@ class ProductController extends Controller
         $target = Product::findOrFail($id);
         $target->update([
             'fs' => false,
+        ]);
+        return redirect()->back();
+    }
+
+    /**
+     * 上架
+     *
+     */
+    public function on($id, Role $role)
+    {
+        if(!$role->admin() && !$role->issuer()) abort(403);
+
+       $target = Product::findOrFail($id);
+       $target->update([
+            'show' => true,
+       ]);
+       return redirect()->back();
+    }
+
+    /**
+     * 下架
+     *
+     */
+    public function off($id, Role $role)
+    {
+        if(!$role->admin() && !$role->issuer()) abort(403);
+
+        $target = Product::findOrFail($id);
+        $target->update([
+            'show' => false,
         ]);
         return redirect()->back();
     }

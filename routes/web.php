@@ -13,7 +13,6 @@
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 Route::get('/', 'ProductController@index');
-Route::get('/products/show/{id}', 'ProductController@show');
 
 // 注册和登录
 Route::get('/register', 'UserController@register');
@@ -54,6 +53,7 @@ Route::group(['middleware' => ['login', 'state']], function () {
     Route::get('/users/set_boss/{id}', 'UserController@setBoss');
 
     // 产品
+    Route::get('/products/show/{id}', 'ProductController@show');
     Route::get('/products/create', 'ProductController@create');
     Route::post('/products/store', 'ProductController@store');
     Route::post('/products/img/store', 'ProductController@imgStore');
@@ -61,6 +61,8 @@ Route::group(['middleware' => ['login', 'state']], function () {
     Route::post('/products/update/{id}', 'ProductController@update');
     Route::get('/products/fs/{id}', 'ProductController@fs'); # 放水
     Route::get('/products/unfs/{id}', 'ProductController@unfs'); # 放水
+    Route::get('/products/on/{id}', 'ProductController@on'); # 放水
+    Route::get('/products/off/{id}', 'ProductController@off'); # 放水
 
 });
 

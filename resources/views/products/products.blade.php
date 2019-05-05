@@ -1,6 +1,7 @@
 <?php
     $p = new App\Helpers\Picker;
     $info = new App\Helpers\Info;
+    $r = new App\Helpers\Role;
 ?>
 @extends('../nav')
 
@@ -31,12 +32,17 @@
                         @endif
                     @endif
    
-                    <p>
+                    <p class="text-center">
                         <strong>¥{{ $product->quota }}</strong><br>
                         <strong>{{ $product->name }}</strong>
-                    </p>
-                    <p>
-                        
+                        @if($r->issuer())
+                            <br>
+                            @if($product->show)
+                                <a href="/products/off/{{ $product->id }}" class="badge badge-danger"><i class="fa fa-fire" aria-hidden="true"></i> 下架 !</a>
+                            @else
+                                <a href="/products/on/{{ $product->id }}" class="badge badge-success"><i class="fa fa-leaf" aria-hidden="true"></i> 上架</a>
+                            @endif
+                        @endif
                     </p>
                 </div>
                 @endforeach
