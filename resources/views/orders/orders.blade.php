@@ -23,7 +23,7 @@
           <ul class="list-unstyled">
         @if($r->admin() || $r->boss())
               @foreach($records as $record)
-                <li><span class="badge badge-light">{{ $record->customer->name }}: {{ $record->customer->mobile }}</span>
+                <li><span class="badge badge-light">{{ $record->id }}: {{ $record->customer->name }}: {{ $record->customer->mobile }}</span>
                   <span class="badge badge-info">{{ $record->product->name }}</span>
                 @if($record->finish)
                   @if($record->success)
@@ -34,7 +34,7 @@
                 @else
                   @if($p->orderValid($record))
                     @if($record->bb && $record->bb->bb)
-                      <a class="btn btn-primary btn-sm" href="/orders/bb/show/{{$record->id}}">下载资料</a>
+                      <a class="badge badge-primary" href="/orders/bb/show/{{$record->id}}">下载资料</a>
                     @else
                     <span class="badge badge-success">截止{{ $p->orderValid($record) }}</span>
                     @endif
@@ -60,9 +60,13 @@
               @else
                 @if($p->orderValid($record))
                   @if($record->bb && $record->bb->bb)
-                    <span class="badge badge-success">已报备,有效返积分!</span>
+                    @if($record->bb->check)
+                      <span class="badge badge-primary">积分: +10</span>
+                    @else
+                      <span class="badge badge-success">已报备,有效返积分!</span>
+                    @endif
                   @else
-                    <a href="javascript:bb({{$record->id}})" class="btn btn-sm btn-outline-primary">报备</a>
+                      <a href="javascript:bb({{$record->id}})" class="badge badge-primary">报备</a>
                   @endif
                 @else
                   <span class="badge badge-warning">已过期</span>

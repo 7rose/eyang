@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use Auth;
@@ -236,6 +238,63 @@ class OrderController extends Controller
         $record = Order::findOrFail($id);
 
         return view('orders.show', compact('record'));
+    }
+
+    /**
+     * 视频下载
+     *
+     */
+    public function videoDownload($id)
+    {
+        $target = Baobei::find($id);
+
+        // $target->info
+        $info = json_decode($target->info, true);
+
+        if(array_key_exists('video', $info)) {
+            return response()->download('storage/'.$info['video']);
+        }
+    }
+
+    /**
+     * 报备有效
+     *
+     */
+    public function bbOk($id)
+    {
+        $order = Order::findOrFail($id);
+
+        $order->bb->update(['check'=>now()]);
+
+        $color = 'success';
+        $icon = 'heart-o';
+        $text = '您的操作已成功,积分已经发放! <br><br><a href="/orders" class="btn btn-sm btn-success">返回</a>';
+
+        return view('note', compact('color', 'icon', 'text'));
+    }
+
+    /**
+     * 报备无效
+     *
+     */
+    public function bbError($id)
+    {
+        $order = Order::findOrFail($id);
+
+
+        $info = json_decode($order->bb->info, true);
+
+        foreach ($info as $key => $value) {
+            if(Storage::has($value)) Storage::delete($value);
+        }
+
+        $order->bb->delete();
+
+        $color = 'success';
+        $icon = 'heart-o';
+        $text = '客户报备已撤销, 他将会看到重新报备要求! <br><br><a href="/orders" class="btn btn-sm btn-success">返回</a>';
+
+        return view('note', compact('color', 'icon', 'text'));
     }
 
     /**
