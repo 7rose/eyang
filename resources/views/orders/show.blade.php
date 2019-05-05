@@ -3,7 +3,7 @@
 @section('content')
 <section>
     <div class="container">
-        <div class="col-sm-5 cent">
+        <div class="col-5 col-sm-8 cent">
             <div class="row text-left">
                 <div class="card card-light form-card col-12">
                     <p><a href="/orders">订单报备</a> / {{ $record->product->name }} {{ $record->created_at }}</p>
