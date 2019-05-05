@@ -35,13 +35,13 @@ Route::group(['middleware' => ['login', 'state']], function () {
     Route::get('/orders/create', 'OrderController@create');
     Route::post('/orders/store', 'OrderController@store');
     Route::post('/orders/bb', 'OrderController@bb'); # 报备
-    Route::post('/orders/bb/store/{order_id}', 'OrderController@bbStore'); # 报备
+    Route::post('/orders/bb/store/{order_id}', 'OrderController@bbStore'); 
     Route::get('/orders/bb/fail/{id}', 'OrderController@bbFailStore'); # 报备失败
     Route::get('/orders/bb/forms/back/{order_id}', 'OrderController@bbBack'); # 备用表单
-    Route::get('/orders/bb/show/{id}', 'OrderController@bbShow'); # 报备失败
-    Route::get('/download/video/{id}', 'OrderController@videoDownload'); # 报备失败
-    Route::get('/orders/bb/ok/{id}', 'OrderController@bbOk'); # 报备失败
-    Route::get('/orders/bb/error/{id}', 'OrderController@bbError'); # 报备失败
+    Route::get('/orders/bb/show/{id}', 'OrderController@bbShow');
+    Route::get('/download/video/{id}', 'OrderController@videoDownload');
+    Route::get('/orders/bb/ok/{id}', 'OrderController@bbOk'); # 报备有效
+    Route::get('/orders/bb/error/{id}', 'OrderController@bbError'); # 报备无效
 
     // 用户
     Route::get('/users/lock/{id}', 'UserController@lock');
@@ -61,8 +61,8 @@ Route::group(['middleware' => ['login', 'state']], function () {
     Route::post('/products/update/{id}', 'ProductController@update');
     Route::get('/products/fs/{id}', 'ProductController@fs'); # 放水
     Route::get('/products/unfs/{id}', 'ProductController@unfs'); # 放水
-    Route::get('/products/on/{id}', 'ProductController@on'); # 放水
-    Route::get('/products/off/{id}', 'ProductController@off'); # 放水
+    Route::get('/products/on/{id}', 'ProductController@on'); 
+    Route::get('/products/off/{id}', 'ProductController@off'); 
 
 });
 
