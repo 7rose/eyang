@@ -50,6 +50,9 @@ Route::group(['middleware' => ['login', 'state']], function () {
     Route::get('/password_reset', 'UserController@passwordReset');
     Route::post('/password_reset/do', 'UserController@passwordResetDo');
 
+    Route::get('/users/remove_boss/{id}', 'UserController@removeBoss');
+    Route::get('/users/set_boss/{id}', 'UserController@setBoss');
+
     // 产品
     Route::get('/products/create', 'ProductController@create');
     Route::post('/products/store', 'ProductController@store');

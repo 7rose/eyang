@@ -35,13 +35,24 @@
                     <li class="text-{{ $r->locked($u->id) ? 'warning' : 'dark' }}">
                       {{ $u->mobile }} 
                       {{$u->name}} 
+
                       {!! $r->boss($u->id) ? '<span class="badge badge-primary">店主</span>' :"" !!} 
+
+                      @if($r->admin() && $r->boss($u->id))
+                        <a href="/users/remove_boss/{{$u->id}}" class="badge badge-dark">取消店主!</a>
+                      @else
+                        <a href="/users/set_boss/{{$u->id}}" class="badge badge-danger">设为店主!</a>
+                      @endif
+
+                    @if($r->gt($u->id))
 
                       @if($r->locked($u->id))
                         {!! $r->gt($u->id) ? '<a class="badge badge-success" href="/users/unlock/'.$u->id.'"><i class="fa fa-unlock" aria-hidden="true"></i></a>' : '' !!}
                       @else
                         {!! $r->gt($u->id) ? '<a class="badge badge-warning" href="/users/lock/'.$u->id.'"><i class="fa fa-lock" aria-hidden="true"></i></a>' : '' !!}
                       @endif
+
+                    @endif
 
                     </li>
                     

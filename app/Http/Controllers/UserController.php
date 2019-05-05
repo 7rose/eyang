@@ -175,6 +175,24 @@ class UserController extends Controller
         return redirect()->back();
     }
 
+    // 设为店主
+    public function setBoss($id, Role $role)
+    {
+        if(!$role->admin()) abort('403');
+
+        User::findOrFail($id)->update(['auth->boss' => true]);
+        return redirect()->back();
+    }
+
+    // 取消店主
+    public function removeBoss($id, Role $role)
+    {
+        if(!$role->admin()) abort('403');
+
+        User::findOrFail($id)->update(['auth->boss' => false]);
+        return redirect()->back();
+    }
+
     /**
      *
      *
