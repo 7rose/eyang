@@ -52,7 +52,7 @@ class ShopsTableSeeder extends Seeder
                 "name":"红牛",
                 "full_name":"红牛贷",
                 "color":"red",
-                "wechat":"https://u.wechat.com/MNVZKdzHjyyiNuaerhCpBxc"
+                "wechat":"https://u.wechat.com/MEjm4ynA5z3SQzF6dc-Bu3U"
             }',
         ]);
 
