@@ -9,8 +9,6 @@
 
 @section('content')
 
-
-
 <section>
     <div class="container">
         <h3><i class="fa fa-hearts-o" aria-hidden="true"></i> 订单报备</h3>
@@ -35,7 +33,11 @@
                   @endif
                 @else
                   @if($p->orderValid($record))
+                    @if($record->bb && $record->bb->bb)
+                      <a class="btn btn-primary btn-sm" href="/orders/bb/show/{{$record->id}}">下载资料</a>
+                    @else
                     <span class="badge badge-success">截止{{ $p->orderValid($record) }}</span>
+                    @endif
                   @else
                     <span class="badge badge-danger">已过期</span>
                   @endif
@@ -57,7 +59,11 @@
                 @endif
               @else
                 @if($p->orderValid($record))
-                  <a href="javascript:bb({{$record->id}})" class="btn btn-sm btn-outline-primary">报备</a>
+                  @if($record->bb && $record->bb->bb)
+                    <span class="badge badge-success">已报备,有效返积分!</span>
+                  @else
+                    <a href="javascript:bb({{$record->id}})" class="btn btn-sm btn-outline-primary">报备</a>
+                  @endif
                 @else
                   <span class="badge badge-warning">已过期</span>
                 @endif

@@ -122,7 +122,7 @@ class ProductController extends Controller
         $exists = Product::find($id);
         if(!$exists) abort('404');
 
-        $new_img = 'storage/app/img/'.$id.'-'.time().'.png';
+        $new_img = 'storage/storage/app/img/'.$id.'-'.time().'.png';
 
         $image = Image::make($img)
                 ->save($new_img);
@@ -203,6 +203,7 @@ class ProductController extends Controller
         ]);
         return redirect()->back();
     }
+
 
     /**
      * 

@@ -17,7 +17,7 @@ class OrgsTableSeeder extends Seeder
             'name' => '融知道',
             'code' => 'rzd',
             'config' => '{
-                "templet":"http://rzd.wetwvn.cn/index.php/Home/shop_info/business_info/{shop}=/shop_id/{product}",
+                "templet":"http://www.gbjing.cn/index.php/Home/shop_info/business_info/{shop}=/shop_id/{product}",
                 "shop":"w{7}",
                 "product":"d{4,}"
             }',

@@ -5,6 +5,7 @@ namespace App\Helpers;
 use Carbon\Carbon;
 
 use App\Product;
+use App\Order;
 
 /**
  * 门店

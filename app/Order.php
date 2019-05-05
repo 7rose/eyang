@@ -31,4 +31,10 @@ class Order extends Model
     {
         return $this->belongsTo('App\Shop', 'id', 'shop_id');
     }
+
+    // 报备
+    public function bb()
+    {
+        return $this->hasOne('App\Baobei', 'order_id', 'id');
+    }
 }

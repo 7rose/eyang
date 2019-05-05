@@ -36,7 +36,10 @@ Route::group(['middleware' => ['login', 'state']], function () {
     Route::get('/orders/create', 'OrderController@create');
     Route::post('/orders/store', 'OrderController@store');
     Route::post('/orders/bb', 'OrderController@bb'); # 报备
+    Route::post('/orders/bb/store/{order_id}', 'OrderController@bbStore'); # 报备
     Route::get('/orders/bb/fail/{id}', 'OrderController@bbFailStore'); # 报备失败
+    Route::get('/orders/bb/forms/back/{order_id}', 'OrderController@bbBack'); # 备用表单
+    Route::get('/orders/bb/show/{id}', 'OrderController@bbShow'); # 报备失败
 
     // 用户
     Route::get('/users/lock/{id}', 'UserController@lock');
@@ -57,20 +60,8 @@ Route::group(['middleware' => ['login', 'state']], function () {
 
 
 Route::get('/test', function() {
-    $my_shop = Auth::user()->shop;
-    // $th = $my_shop->pluck('domain', 'id')->toArray();
-    $subs = $my_shop->subs->pluck('domain', 'id')->toArray();
-
-    $subs = array_add($subs, $my_shop->id, $my_shop->domain);
-    print_r($subs);
-    // $shops = Auth::user()->shop->pluck('domain', 'id')->toArray();
-    // echo $shops;
-    // print_r($shops);
-
-        // if(Auth::user()->shop->subs->count()) {
-        //     $subs = Auth::user()->shop->subs->pluck('domain', 'id')->toArray();
-        //     array_push($shops, $sub);
-        // }
+    $a = new App\Helpers\Picker;
+    print_r($a->bb(3));
 
 });
 
