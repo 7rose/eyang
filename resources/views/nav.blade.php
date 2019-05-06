@@ -37,7 +37,7 @@
          <div class="dropdown">
             <a href="#" data-toggle="dropdown" class="dropdown-toggle menu-item text-{{ Auth::check() ? 'text-primary': 'dark' }}">
               @if(Auth::check())
-                <i class="fa fa-user-circle-o" aria-hidden="true"></i> {{ Auth::user()->name }}
+                <i class="fa fa-user-circle-o" aria-hidden="true"></i> {{ Auth::user()->name }} <span class="badge badge-primary">{{ $info->bbNum() }}</span> 
               @else
                 <i class="fa fa-user-o" aria-hidden="true"></i>
               @endif

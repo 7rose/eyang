@@ -29,18 +29,18 @@ class ProductController extends Controller
 
         $records = Conf::where('key', 'product_type')
                         ->whereHas('products', function($q1){
-                            $q1->whereNotNull('img');
                             $q1->whereNotIn('org_id', $this->info->lackOrgIds());
 
                             if(!$this->role->issuer()) {
+                                $q1->whereNotNull('img');
                                 $q1->where('show', true);
                             }
                         })
                         ->with(['products' => function($query){
-                            $query->whereNotNull('img');
                             $query->whereNotIn('org_id', $this->info->lackOrgIds());
 
                             if(!$this->role->issuer()) {
+                                $query->whereNotNull('img');
                                 $query->where('show', true);
                             }
 

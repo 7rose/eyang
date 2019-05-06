@@ -7,6 +7,8 @@ use Auth;
 use App\Shop;
 use App\Role;
 use App\Org;
+use App\Order;
+use App\Helpers\Picker;
 
 /**
  * 门店
@@ -95,6 +97,34 @@ class Info
 
         return $out;
     }
+
+    /**
+     * 提示设置账号
+     *
+     */
+    public function bbNum()
+    {
+        $records = Order::where('user_id', Auth::id())
+                    ->whereDoesntHave('bb', function($query){
+                        // $query->whereNull('bb');
+                    })
+                    ->whereHas('product', function($q1) {
+                        $q1->whereHas('org', function($q2) {
+                            $q2->where('code', 'rzd');
+                        });
+                    })
+                    ->get();
+                    // ->count();
+        $p = new Picker;
+
+        $num = 0;
+
+        foreach ($records as $record) {
+            if($p->orderValid($record)) $num ++;
+        }
+
+        return $num > 0 ? $num : null;
+    }    
 
 }
 

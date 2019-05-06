@@ -38,7 +38,7 @@ class Picker
      */
     public function orderValid($record)
     {
-        $end = $record->created_at->startOfDay()->addHours(23)->addMinutes(30);
+        $end = $record->created_at->startOfDay()->addHours(21)->addMinutes(30);
 
         return $end->gt(now()) ? $end->diffForHumans() : false;
     }
