@@ -46,7 +46,7 @@
                     <small><i class="fa fa-bell-o" aria-hidden="true"></i> 温馨提示: 借贷和风险防范属于您自身义务，务必谨慎。</small><br>
 
                     @if($link->mustFinish($record))
-                    <p><small class="text-primary"><span class="badge badge-primary"><i class="fa fa-handshake-o" aria-hidden="true"></i> 报备产品</span> 下款率高于常规产品, 但每次申请都会在本平台生成订单, 您需报备订单并按要求反馈; 每次下款报备通过后返红包10元, 请联系客服! 3次不报备或者不能接受的, 本平台将终止服务。</small></p>
+                    <p><small class="text-primary"><span class="badge badge-primary"><i class="fa fa-handshake-o" aria-hidden="true"></i> 报备产品</span> 下款率高于常规产品, 但您需报备订单即:按要求提交简单的截图等; 每次下款报备通过后返红包10元, 可累计或即时联系客服提取! 3次不报备或者不能接受的, 本平台将终止服务。</small></p>
                     @endif
                     
                </blockquote>
