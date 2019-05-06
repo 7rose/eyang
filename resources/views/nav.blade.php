@@ -45,7 +45,7 @@
             <div class="dropdown-menu dropdown-menu-right">
               @if(Auth::check())
 
-                <a class="dropdown-item menu-text" href="/orders"><i class="fa fa-heart-o" aria-hidden="true"></i> 订单报备</a>
+                <a class="dropdown-item menu-text" href="/orders"><i class="fa fa-heart-o" aria-hidden="true"></i> 订单报备 <span class="badge badge-primary">{{ $info->bbNum() }}</span></a>
                 @if($role->boss() || $role->manager())
                 <a class="dropdown-item menu-text" href="/shops"><i class="fa fa-users" aria-hidden="true"></i> 店和用户</a>
                 @endif
