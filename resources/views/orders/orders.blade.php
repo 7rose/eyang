@@ -24,7 +24,7 @@
         @if($r->admin() || $r->boss())
               @foreach($records as $record)
                 <li><span class="badge badge-light">{{ $record->id }}: {{ $record->customer->name }}: {{ $record->customer->mobile }}</span>
-                  <span class="badge badge-info">{{ isset($record->product) ? $record->product->name : '产品丢失' }}</span>
+                  <span class="badge badge-info">{{ isset($record->product) ? $record->product->name : '产品已下架' }}</span>
                 @if($record->finish)
                   @if($record->success)
                   <span class="badge badge-success">报备: 成功, 下载资料</span>
@@ -53,7 +53,7 @@
               @else
                 x
               @endif
-              <strong>{{ isset($record->product) ? $record->product->name : '产品丢失' }}</strong>
+              <strong>{{ isset($record->product) ? $record->product->name : '产品已下架' }}</strong>
               [{{ $record->created_at->diffForHumans() }}]
               @if($record->finish)
                 @if($record->success)
