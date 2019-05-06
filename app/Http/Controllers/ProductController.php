@@ -98,7 +98,11 @@ class ProductController extends Controller
         $new = $request->all();
         $new['created_by'] = Auth::id();
 
-        $product_code = $link->getProductCode(intval($request->org_id), $request->url);
+        try {
+            $product_code = $link->getProductCode(intval($request->org_id), $request->url);
+        } catch (Exception $e) {
+            abort('403');
+        }
 
         if(!$product_code) abort('403');
 
