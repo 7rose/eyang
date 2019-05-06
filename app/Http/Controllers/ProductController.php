@@ -11,6 +11,7 @@ use App\Forms\ProductForm;
 use App\Product;
 use App\Conf;
 use App\Org;
+use App\Order;
 use App\Helpers\Info;
 use App\Helpers\Link;
 use App\Helpers\Role;
@@ -254,6 +255,13 @@ class ProductController extends Controller
     public function delete($id)
     {
         $target = Product::findOrFail($id);
+
+        $order = Order::where('product_id', $id)
+                        ->whereDate('created_at', today()->toDateString())
+                        ->count();
+                        
+        if($order > 0) abort('403');
+
 
         if($target->img) unlink($target->img);
 

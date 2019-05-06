@@ -69,8 +69,9 @@ Route::group(['middleware' => ['login', 'state']], function () {
 
 
 Route::get('/test', function() {
-    $a = new App\Helpers\Picker;
-    print_r($a->bb(3));
+    
+    $a = today()->toDateString();
+    echo $a;
 
 });
 
