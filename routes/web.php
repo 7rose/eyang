@@ -70,7 +70,7 @@ Route::group(['middleware' => ['login', 'state']], function () {
 
 Route::get('/test', function() {
     
-    $a = today()->toDateString();
+    $a = App\Conf::find(2)->update(['text'=>'精品推荐']);
     echo $a;
 
 });

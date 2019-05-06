@@ -22,7 +22,7 @@ class ConfsTableSeeder extends Seeder
         Conf::create([
             'key' => 'product_type',
             'val' => 'cpa',
-            'text' => '新品推荐',
+            'text' => '精品推荐',
         ]);
     }
 }
