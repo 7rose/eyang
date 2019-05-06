@@ -63,6 +63,7 @@ Route::group(['middleware' => ['login', 'state']], function () {
     Route::get('/products/unfs/{id}', 'ProductController@unfs'); # 放水
     Route::get('/products/on/{id}', 'ProductController@on'); 
     Route::get('/products/off/{id}', 'ProductController@off'); 
+    Route::get('/products/delete/{id}', 'ProductController@delete'); 
 
 });
 

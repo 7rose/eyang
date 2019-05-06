@@ -247,6 +247,21 @@ class ProductController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * 删除
+     *
+     */
+    public function delete($id)
+    {
+        $target = Product::findOrFail($id);
+
+        if($target->img) unlink($target->img);
+
+        $target->delete();
+
+        return redirect()->back();
+    }
+
 
     /**
      * 
