@@ -63,7 +63,12 @@ class ShopController extends Controller
 
         foreach ($all as $org_id => $url) {
             if(trim($url)) {
-                $resault = $link->saveShopCode(intval($org_id), $url);
+                try {
+                    
+                    $resault = $link->saveShopCode(intval($org_id), $url);
+                } catch (Exception $e) {
+                    abort('403');
+                }
                 if(!$resault) return $this->fail();
             }
         }
