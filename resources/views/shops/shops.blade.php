@@ -33,6 +33,15 @@
                   @foreach($record->users as $u)
                     
                     <li class="text-{{ $r->locked($u->id) ? 'warning' : 'dark' }}">
+                      @if($r->gt($u->id))
+
+                      @if($r->locked($u->id))
+                        {!! $r->gt($u->id) ? '<a class="badge badge-success" href="/users/unlock/'.$u->id.'"><i class="fa fa-unlock" aria-hidden="true"></i></a>' : '' !!}
+                      @else
+                        {!! $r->gt($u->id) ? '<a class="badge badge-warning" href="/users/lock/'.$u->id.'"><i class="fa fa-lock" aria-hidden="true"></i></a>' : '' !!}
+                      @endif
+
+                    @endif
                       {{ $u->mobile }} 
                       {{$u->name}} 
 
@@ -44,15 +53,7 @@
                         <a href="/users/set_boss/{{$u->id}}" class="badge badge-danger">设为店主!</a>
                       @endif
 
-                    @if($r->gt($u->id))
-
-                      @if($r->locked($u->id))
-                        {!! $r->gt($u->id) ? '<a class="badge badge-success" href="/users/unlock/'.$u->id.'"><i class="fa fa-unlock" aria-hidden="true"></i></a>' : '' !!}
-                      @else
-                        {!! $r->gt($u->id) ? '<a class="badge badge-warning" href="/users/lock/'.$u->id.'"><i class="fa fa-lock" aria-hidden="true"></i></a>' : '' !!}
-                      @endif
-
-                    @endif
+                    
 
                     </li>
                     

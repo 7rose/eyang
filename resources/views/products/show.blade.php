@@ -2,7 +2,6 @@
     $p = new App\Helpers\Picker;
     $link = new App\Helpers\Link;
     $r = new App\Helpers\Role;
-
 ?>
 
 @extends('../nav')
