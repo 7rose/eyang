@@ -9,7 +9,6 @@
 
 
 <section>
-    <div class="alert alert-info note-pad"><small>135***** 在小鸟有钱下款3000!</small> </div>
 
     <div class="container">
     <div class="row">
