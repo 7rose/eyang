@@ -21,7 +21,7 @@
         <div class="card">
           <div class="card-body">
               @if(isset($record))
-                <img src="{{ asset('img/'.$info->domain().'.svg') }}" alt="" class="img-fluid order-icon">
+               
                 <p class="text-primary">
                   <strong>{{ $f->show($record->info, 'name') }}</strong> {{ $record->domain }} 
                   @if($r->admin())
