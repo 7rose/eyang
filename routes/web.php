@@ -77,11 +77,12 @@ Route::group(['middleware' => ['login', 'state']], function () {
 
 
 Route::get('/test', function() {
+    $n = new Carbon\Carbon;
     
-    $a = new App\Helpers\Filter;
-    $b = $a->bb(1);
+    // $a = today()->addHours(21)->addMinutes(30);
+    $a = $n->tomorrow()->addHours(14)->addMinutes(30);
 
-    print_r($b);
+    echo $a;
 
 });
 
