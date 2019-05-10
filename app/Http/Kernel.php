@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
 
         'login' => \App\Http\Middleware\Login::class,
         'state' => \App\Http\Middleware\State::class,
+        'limit' => \App\Http\Middleware\Limit::class,
     ];
 
     /**

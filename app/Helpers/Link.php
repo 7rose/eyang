@@ -183,15 +183,6 @@ class Link
     }
 
     /**
-     * 报备产品
-     *
-     */
-    public function mustFinish($product)
-    {
-        return $product->org->code == 'rzd';
-    }
-
-    /**
      *
      *
      */

@@ -22,38 +22,46 @@ Route::post('/login/check', 'UserController@check');
 Route::get('/logout', 'UserController@logout');
 
 Route::group(['middleware' => ['login', 'state']], function () {
+    
+    // 供应商
+    Route::get('/orgs', 'OrgController@index');
+    Route::get('/orgs/create', 'OrgController@create');
+    Route::post('/orgs/store', 'OrgController@store');
 
     // 店
     Route::get('/shops', 'ShopController@index');
     Route::get('/shops/active', 'ShopController@active');
     Route::post('/shops/active/do', 'ShopController@doActive');
     Route::get('/shops/create/{parent_id}', 'ShopController@create');
-    Route::post('/shops/store/{parent_id}', 'ShopController@store');
+    Route::post('/shops/store/{parent_id}', 'ShopController@store'); 
 
     // 订单
     Route::get('/orders', 'OrderController@index');
     Route::get('/orders/create', 'OrderController@create');
     Route::post('/orders/store', 'OrderController@store');
-    Route::post('/orders/bb', 'OrderController@bb'); # 报备
-    Route::post('/orders/bb/store/{order_id}', 'OrderController@bbStore'); 
-    Route::get('/orders/bb/fail/{id}', 'OrderController@bbFailStore'); # 报备失败
-    Route::get('/orders/bb/forms/back/{order_id}', 'OrderController@bbBack'); # 备用表单
-    Route::get('/orders/bb/show/{id}', 'OrderController@bbShow');
-    Route::get('/download/video/{id}', 'OrderController@videoDownload');
-    Route::get('/orders/bb/ok/{id}', 'OrderController@bbOk'); # 报备有效
-    Route::get('/orders/bb/error/{id}', 'OrderController@bbError'); # 报备无效
+    Route::get('/bb/success/{id}', 'OrderController@bbSuccess'); # 报备成功
+    Route::get('/bb/success/back_form/{id}', 'OrderController@bbBack'); # 备用表单
+    Route::post('/bb/success/store/{id}', 'OrderController@bbSuccessStore'); 
+    Route::get('/bb/fail/{id}', 'OrderController@bbFail'); # 报备失败
+    Route::post('/bb/fail/store/{id}', 'OrderController@bbFailStore'); 
+    Route::get('/bb/show/{id}', 'OrderController@bbShow'); # 下载
+    Route::get('/bb/check_fail/{id}', 'OrderController@checkFail'); 
+    Route::get('/bb/check_ok/{id}', 'OrderController@checkOk'); 
+    Route::get('/download/video/{id}', 'OrderController@videoDownload'); # 视频下载
 
     // 用户
     Route::get('/users/lock/{id}', 'UserController@lock');
     Route::get('/users/unlock/{id}', 'UserController@unlock');
     Route::get('/password_reset', 'UserController@passwordReset');
     Route::post('/password_reset/do', 'UserController@passwordResetDo');
-
     Route::get('/users/remove_boss/{id}', 'UserController@removeBoss');
     Route::get('/users/set_boss/{id}', 'UserController@setBoss');
+    Route::get('/users/limit_reset/{id}', 'UserController@limitReset');
+    Route::get('/users/limit_add/{id}', 'UserController@limitAdd');
+    Route::get('/users/limit_cut/{id}', 'UserController@limitCut');
 
     // 产品
-    Route::get('/products/show/{id}', 'ProductController@show');
+    Route::get('/products/show/{id}', 'ProductController@show')->middleware('limit');
     Route::get('/products/create', 'ProductController@create');
     Route::post('/products/store', 'ProductController@store');
     Route::post('/products/img/store', 'ProductController@imgStore');
@@ -70,8 +78,10 @@ Route::group(['middleware' => ['login', 'state']], function () {
 
 Route::get('/test', function() {
     
-    $a = App\Conf::find(2)->update(['text'=>'精品推荐']);
-    echo $a;
+    $a = new App\Helpers\Filter;
+    $b = $a->bb(1);
+
+    print_r($b);
 
 });
 

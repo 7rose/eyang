@@ -163,6 +163,70 @@ class Role
         return false;
     }
 
+    /**
+     * 显示限制次数
+     *
+     */
+    public function limit($id=0)
+    {
+        $user = $this->choose($id);
+        return $user->limit;
+    } 
+
+    /**
+     * 被限制
+     *
+     */   
+    public function limited($id=0)
+    {
+        $user = $this->choose($id);
+        return $user->limit < 1;
+    } 
+
+    /**
+     * 复位限制次数
+     *
+     */
+    public function limitReset($id=0)
+    {
+        $user = $this->choose($id);
+        return $user->update(['limit' => 3]);
+    } 
+
+    /**
+     * 限制: 增加1次
+     *
+     */ 
+    public function limitAdd($id=0)
+    {
+        $user = $this->choose($id);
+        $old = $user->limit;
+
+        if($old < 3) { 
+            $new = $user->increment('limit');
+            return $new;
+        }else{
+            return $old;
+        }
+    } 
+
+    /**
+     * 限制: 减少1次
+     *
+     */ 
+    public function limitCut($id=0)
+    {
+        $user = $this->choose($id);
+        $old = $user->limit;
+
+        if($old > 0) { 
+            $new = $user->decrement('limit');
+            return $new;
+        }else{
+            return $old;
+        }
+    } 
+
 }
 
 

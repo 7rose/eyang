@@ -194,6 +194,42 @@ class UserController extends Controller
     }
 
     /**
+     * 复位限制次数为 3
+     *
+     */
+    public function limitReset($id, Role $role)
+    {
+        if(!$role->gt($id)) abort('403');
+
+        $role->limitReset($id);
+        return redirect('/shops');
+    }
+
+    /**
+     * 限制次数 +1
+     *
+     */
+    public function limitAdd($id, Role $role)
+    {
+        if(!$role->gt($id)) abort('403');
+
+        $role->limitAdd($id);
+        return redirect('/shops');
+    }
+
+    /**
+     * 限制次数 -1
+     *
+     */
+    public function limitCut($id, Role $role)
+    {
+        if(!$role->gt($id)) abort('403');
+
+        $role->limitCut($id);
+        return redirect('/shops');
+    }
+
+    /**
      *
      *
      */

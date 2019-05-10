@@ -15,23 +15,34 @@ use App\Order;
 use App\User;
 use App\Product;
 use App\Forms\OrderForm;
+use App\Forms\BbFailForm;
 use App\Forms\BbForm;
 use App\Forms\BbBackForm;
 use App\Helpers\Info;
 use App\Helpers\Validator;
+use App\Helpers\Role;
+use App\Helpers\Filter;
 
 class OrderController extends Controller
 {
     use FormBuilderTrait;
 
+    private $role;
     /**
      * 列表
      *
      */
-    public function index(Info $info)
+    public function index(Info $info, Role $role)
     {
+        $this->role = $role;
+
         $records = Order::
                 where('shop_id', $info->id())
+                ->where(function ($query){
+                    if(!$this->role->admin() && !$this->role->boss()) {
+                        $query->where('user_id', Auth::id());
+                    }
+                })
                 ->latest()
                 ->get();
 
@@ -42,8 +53,10 @@ class OrderController extends Controller
      * 新订单
      *
      */
-    public function create()
+    public function create(Role $role)
     {
+        if(!$role->admin() && !$role->shopBoss()) abort('403');
+
          $form = $this->form(OrderForm::class, [
             'method' => 'POST',
             'url' => '/orders/store'
@@ -59,8 +72,10 @@ class OrderController extends Controller
      * 保存
      *
      */
-    public function store(Request $request, Info $info)
+    public function store(Request $request, Info $info, Role $role)
     {
+        if(!$role->admin() && !$role->shopBoss()) abort('403');
+
         $v = new Validator;
         if(!$v->checkMobile($request->mobile)) return redirect()->back()->withErrors(['mobile'=>'手机号不正确!'])->withInput();
 
@@ -78,7 +93,10 @@ class OrderController extends Controller
         $new['created_by'] = Auth::id();
 
         Order::create($new);
-        
+
+        // 限制次数 -1
+        $role->limitCut($user->id);
+
         $color = 'success';
         $icon = 'heart-o';
         $text = '订单登记成功! <br><br><a href="/orders/create" class="btn btn-sm btn-success">继续登记</a>';
@@ -88,43 +106,22 @@ class OrderController extends Controller
     }
 
     /**
-     * 报备
+     * 报备成功
      *
      */
-    public function bb(Request $request)
-    {
-        // print_r($request->all());
-        switch ($request->success) {
-            case 'yes':
-                return $this->bbForm($request->order_id);
-                break;
-
-            case 'no':
-                return $this->bbFail($request->order_id);
-                break;
-            
-            default:
-                # code...
-                break;
-        }
-    }
-
-    /**
-     * 报备
-     *
-     */
-    private function bbForm($order_id)
+    public function bbSuccess($id, Filter $filter)
     {
         $form = $this->form(BbForm::class, [
             'method' => 'POST',
-            'url' => '/orders/bb/store/'.$order_id,
-            'data' => ['order_id' => $order_id],
+            'url' => '/bb/success/store/'.$id,
+            'data' => ['id' => $id],
         ]);
 
         $title = '报备';
 
-        $v = new Validator;
-        if($v->bbBackForm($order_id)) $title = '报备: <small>录视频麻烦?<a href="/orders/bb/forms/back/'.$order_id.'" class="btn btn-sm btn-outline-primary">提供账号</a></small>';
+        $order = Order::findOrFail($id);
+
+        if($filter->bbBackup($order)) $title = '报备: <small>录视频麻烦?<a href="/bb/success/back_form/'.$id.'" class="btn btn-sm btn-outline-primary">提供账号</a></small>';
 
         $icon = 'heart';
 
@@ -135,18 +132,17 @@ class OrderController extends Controller
      * 报备: 备用表单
      *
      */
-    public function bbBack($order_id)
+    public function bbBack($id, Filter $filter)
     {
         $form = $this->form(BbBackForm::class, [
             'method' => 'POST',
-            'url' => '/orders/bb/store/'.$order_id,
-            'data' => ['order_id' => $order_id],
+            'url' => '/bb/success/store/'.$id,
         ]);
 
-        $title = '报备';
+        $title = '报备: 成功下款';
+        $order = Order::findOrFail($id);
 
-        $v = new Validator;
-        if($v->bbBackForm($order_id)) $title = '报备: <small>觉得录视频安全?<a href="/orders" class="btn btn-sm btn-outline-primary">重新报备</a></small>';
+        if($filter->bbBackup($order)) $title = '报备: <small>录视频安全?<a href="/bb/success/'.$id.'" class="btn btn-sm btn-outline-primary">正常报备</a></small>';
 
         $icon = 'heart';
 
@@ -154,10 +150,10 @@ class OrderController extends Controller
     }
 
     /**
-     * 报备
+     * 保存
      *
      */
-    public function bbStore($order_id, Request $request, Info $in)
+    public function bbSuccessStore($id, Request $request, Info $in)
     {
         $items = $request->except(['_token']);
 
@@ -167,7 +163,7 @@ class OrderController extends Controller
             if($request->hasFile($key)) {
 
                 $path = Storage::putFileAs(
-                    'storage/app/bb', $request->file($key), $order_id.'-'.$key.'-'.time().'.'.$request->file($key)->getClientOriginalExtension()
+                    'storage/app/bb', $request->file($key), $id.'-'.$key.'-'.time().'.'.$request->file($key)->getClientOriginalExtension()
                 );
                 $info = array_add($info, $key, $path);
             }else{
@@ -176,9 +172,9 @@ class OrderController extends Controller
         }
 
         $new = [
-            'order_id' => $order_id,
+            'order_id' => $id,
             'info' => json_encode($info),
-            'bb' => now(),
+            'success' => true,
         ];
 
         Baobei::create($new);
@@ -188,64 +184,109 @@ class OrderController extends Controller
         $text = '您已成功报备, '.$in->show('name').'感谢您的支持! <br><br><a href="/orders" class="btn btn-sm btn-success">返回</a>';
 
         return view('note', compact('color', 'icon', 'text'));
-
-    }
-
-
-
-    /**
-     * 报备: 失败提示
-     *
-     */
-    private function bbFail($id)
-    {
-        $order = Order::findOrFail($id);
-
-        $color = 'warning';
-        $icon = 'low-vision';
-        $text = '您正将 '.$order->created_at.' 在 <strong>'.$order->product->name.'</strong> 审批的订单标记为未成功下款, 此产品将在您后续一个月登录中从产品列表中排除, 以呈现给您大通过率的产品,请确认! 若产品已下款, 请 <a href="/orders">返回</a> 报备  <br><br><a href="/orders/bb/fail/'.$id.'" class="btn btn-sm btn-warning">确认下款不成功</a>';
-
-        return view('note', compact('color', 'icon', 'text'));
     }
 
     /**
-     * 报备失败: 操作
+     * 报备失败
      *
      */
-    public function bbFailStore($id)
+    public function bbFail($id)
     {
-        $order = Order::findOrFail($id);
+        $form = $this->form(BbFailForm::class, [
+            'method' => 'POST',
+            'url' => '/bb/fail/store/'.$id,
+        ]);
 
-        $order->update([
-            'finish' => now(),
-            // 'success' => false # 默认
+        $title = '报备: 未下款';
+        $icon = 'heart-o';
+
+        return view('form', compact('form','title','icon'));
+    }
+
+    /**
+     * 保存
+     *
+     */
+    public function bbFailStore($id, Request $request)
+    {
+        $path = Storage::putFileAs('storage/app/bb', $request->file('fail'), $id.'-'.'fail'.'-'.time().'.'.$request->file('fail')->getClientOriginalExtension());
+
+        $fail = Baobei::create([
+            'order_id' => $id,
+            'info->fail' => $path,
         ]);
 
         $color = 'success';
         $icon = 'heart-o';
-        $text = '您的操作已成功! <br><br><a href="/orders" class="btn btn-sm btn-success">返回</a>';
+        $text = '您已报备未下款产品, 感谢支持! <br><br><a href="/orders" class="btn btn-sm btn-success">返回</a>';
 
         return view('note', compact('color', 'icon', 'text'));
-
     }
 
     /**
-     * 报备失败: 操作
+     * 下载
      *
      */
-    public function bbShow($id)
+    public function bbShow($id, Role $role)
     {
-        $record = Order::findOrFail($id);
+        if(!$role->admin() && !$role->shopBoss()) abort('403');
 
+        $record = Order::findOrFail($id);
         return view('orders.show', compact('record'));
     }
+
+    /**
+     * 审核成功
+     *
+     */
+    public function checkOk($id, Role $role)
+    {
+        if(!$role->admin() && !$role->shopBoss()) abort('403');
+
+        $record = Order::findOrFail($id);
+        $info = json_decode($record->bb->info);
+
+        $record->bb->update([
+            'check' => now(),
+            'resault' => true,
+        ]);
+
+        // 限制次数 +1
+        $role->limitAdd($record->customer->id);
+
+        return redirect('/orders');
+    }
+
+
+    /**
+     * 审核失败
+     *
+     */
+    public function checkFail($id, Role $role)
+    {
+        if(!$role->admin() && !$role->shopBoss()) abort('403');
+
+        $record = Order::findOrFail($id);
+        $info = json_decode($record->bb->info);
+
+        // if(isset($info->))
+        foreach ($info as $key => $value) {
+            if($info->$key) Storage::delete([$value]);
+        }
+        $record->bb->delete();
+        
+        return redirect('/orders');
+    }
+
 
     /**
      * 视频下载
      *
      */
-    public function videoDownload($id)
+    public function videoDownload($id, Role $role)
     {
+        if(!$role->admin() && !$role->shopBoss()) abort('403');
+
         $target = Baobei::find($id);
 
         // $target->info
@@ -256,46 +297,6 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * 报备有效
-     *
-     */
-    public function bbOk($id)
-    {
-        $order = Order::findOrFail($id);
-
-        $order->bb->update(['check'=>now()]);
-
-        $color = 'success';
-        $icon = 'heart-o';
-        $text = '您的操作已成功,积分已经发放! <br><br><a href="/orders" class="btn btn-sm btn-success">返回</a>';
-
-        return view('note', compact('color', 'icon', 'text'));
-    }
-
-    /**
-     * 报备无效
-     *
-     */
-    public function bbError($id)
-    {
-        $order = Order::findOrFail($id);
-
-
-        $info = json_decode($order->bb->info, true);
-
-        foreach ($info as $key => $value) {
-            if(Storage::has($value)) Storage::delete($value);
-        }
-
-        $order->bb->delete();
-
-        $color = 'success';
-        $icon = 'heart-o';
-        $text = '客户报备已撤销, 他将会看到重新报备要求! <br><br><a href="/orders" class="btn btn-sm btn-success">返回</a>';
-
-        return view('note', compact('color', 'icon', 'text'));
-    }
 
     /**
      *

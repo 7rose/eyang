@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->jsonb('auth')->nullable();
             $table->jsonb('info')->nullable();
             $table->string('password');
+            $table->integer('limit')->default(3);
             $table->rememberToken();
             $table->timestamps();
         });

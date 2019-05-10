@@ -20,8 +20,6 @@ class CreateOrdersTable extends Migration
             $table->integer('shop_id');
             $table->integer('created_by');
             $table->integer('amount')->nullable();
-            $table->datetime('finish')->nullable();
-            $table->boolean('success')->default(false);
             $table->jsonb('info')->nullable();
             $table->timestamps();
         });

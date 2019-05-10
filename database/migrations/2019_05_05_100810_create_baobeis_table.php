@@ -17,7 +17,8 @@ class CreateBaobeisTable extends Migration
             $table->bigIncrements('id');
             $table->integer('order_id');
             $table->jsonb('info');
-            $table->datetime('bb')->nullable();
+            $table->boolean('success')->default(false);
+            $table->boolean('resault')->default(false);
             $table->datetime('check')->nullable();
             $table->timestamps();
         });

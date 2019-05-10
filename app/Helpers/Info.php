@@ -8,6 +8,7 @@ use App\Shop;
 use App\Role;
 use App\Org;
 use App\Order;
+use App\Helpers\Filter;
 use App\Helpers\Picker;
 
 /**
@@ -108,19 +109,21 @@ class Info
                     ->whereDoesntHave('bb', function($query){
                         // $query->whereNull('bb');
                     })
-                    ->whereHas('product', function($q1) {
-                        $q1->whereHas('org', function($q2) {
-                            $q2->where('code', 'rzd');
-                        });
-                    })
+
+                    // ->whereHas('product', function($q1) {
+                    //     $q1->whereHas('org', function($q2) {
+                    //         $q2->where('code', 'rzd');
+                    //     });
+                    // })
                     ->get();
                     // ->count();
+        $f = new Filter;
         $p = new Picker;
 
         $num = 0;
 
         foreach ($records as $record) {
-            if($p->orderValid($record)) $num ++;
+            if($f->bb($record->product->id) && $p->ok($record)) $num ++;
         }
 
         return $num > 0 ? $num : null;

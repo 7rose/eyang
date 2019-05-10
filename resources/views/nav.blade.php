@@ -41,14 +41,28 @@
               @else
                 <i class="fa fa-user-o" aria-hidden="true"></i>
               @endif
+             
             </a>
             <div class="dropdown-menu dropdown-menu-right">
               @if(Auth::check())
+                @if($role->boss() || $role->admin())
+                <a class="dropdown-item menu-text" href="/shops"><i class="fa fa-users" aria-hidden="true"></i> 店和用户</a>
+                @else
+                  @if($role->limited())
+                  <span class="dropdown-item menu-text text-danger"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i> 我的次数限制: {{ $role->limit() }}</span>
+                  @else
+                  <span class="dropdown-item menu-text"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i> 我的次数限制: {{ $role->limit() }}</span>
+                  @endif
+                @endif
 
                 <a class="dropdown-item menu-text" href="/orders"><i class="fa fa-heart-o" aria-hidden="true"></i> 订单报备 <span class="badge badge-primary">{{ $info->bbNum() }}</span></a>
-                @if($role->boss() || $role->manager())
-                <a class="dropdown-item menu-text" href="/shops"><i class="fa fa-users" aria-hidden="true"></i> 店和用户</a>
+                
+
+                @if($role->root())
+                <a class="dropdown-item menu-text" href="/orgs"><i class="fa fa-cubes" aria-hidden="true"></i> 供应商</a>
                 @endif
+
+
 
                 @if($role->issuer())
                 <a class="dropdown-item menu-text" href="/products/create"><i class="fa fa-money" aria-hidden="true"></i> 发布产品</a>

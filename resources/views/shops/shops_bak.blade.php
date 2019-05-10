@@ -35,42 +35,26 @@
                     <li class="text-{{ $r->locked($u->id) ? 'warning' : 'dark' }}">
                       <div class="dropdown-divider"></div>
                       <h5>
-                      
-                    @if($r->gt($u->id))
-                      <a href="#" class="badge badge-info"  id="dropdownMenua" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-cogs" aria-hidden="true"></i>
-                      </a>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      @if($r->gt($u->id))
 
-                        @if($r->locked($u->id))
-                          <a class="dropdown-item" href="/users/unlock/{{ $u->id }}">解锁: {{ $u->name }}</a>
-                        @else
-                          <a class="dropdown-item" href="/users/lock/{{ $u->id }}">锁定: {{ $u->name }}</a>
-                        @endif
+                      @if($r->locked($u->id))
+                        {!! $r->gt($u->id) ? '<a class="badge badge-success" href="/users/unlock/'.$u->id.'"><i class="fa fa-unlock" aria-hidden="true"></i></a>' : '' !!}
+                      @else
+                        {!! $r->gt($u->id) ? '<a class="badge badge-warning" href="/users/lock/'.$u->id.'"><i class="fa fa-lock" aria-hidden="true"></i></a>' : '' !!}
+                      @endif
 
-                        @if($r->boss($u->id))
-                          <a class="dropdown-item" href="/users/remove_boss/{{ $u->id }}">撤销店主: {{ $u->name }}</a>
-                        @else
-                          <a class="dropdown-item" href="/users/set_boss/{{ $u->id }}">升级为店主: {{ $u->name }}</a>
-                        @endif
-
-                        @if(!$r->boss($u->id) && !$r->admin($u->id))
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="/users/limit_reset/{{ $u->id }}">限制复位, 现有:{{ $u->limit }}</a>
-                          <a class="dropdown-item" href="/users/limit_add/{{ $u->id }}">次数 +1, 现有:{{ $u->limit }}</a>
-                          <a class="dropdown-item" href="/users/limit_cut/{{ $u->id }}">次数 -1, 现有:{{ $u->limit }}</a>
-                        @endif
-
-                      </div>
                     @endif
-
                       {{ $u->mobile }} 
                       {{$u->name}} 
 
                       {!! $r->boss($u->id) ? '<span class="badge badge-primary">店主</span>' :"" !!} 
-                      {!! $r->limit($u->id) && !$r->boss($u->id) && !$r->admin($u->id) ? '<span class="badge badge-success">'.$r->limit($u->id).'</span>' :"" !!} 
 
-                      </h5>
+                      @if($r->admin() && $r->boss($u->id))
+                        <a href="/users/remove_boss/{{$u->id}}" class="badge badge-dark">取消店主!</a>
+                      @else
+                        <a href="/users/set_boss/{{$u->id}}" class="badge badge-danger">设为店主!</a>
+                      @endif
+                    </h5>
 
                     
 

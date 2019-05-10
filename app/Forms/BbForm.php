@@ -4,15 +4,19 @@ namespace App\Forms;
 
 use Kris\LaravelFormBuilder\Form;
 
-use App\Helpers\Validator;
+use App\Helpers\Filter;
+use App\Order;
 
 class BbForm extends Form
 {
     public function buildForm()
     {
-        $v = new Validator;
+        $f = new Filter;
+        $record = Order::findOrFail($this->getData('id'));
+        $product_id = $record->product->id;
 
-        $items = $v->bb($this->getData('order_id'));
+        $items = $f->bb($product_id);
+
         if(!$items) abort('403');
 
         foreach ($items as $key => $value) {

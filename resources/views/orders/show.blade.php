@@ -1,15 +1,19 @@
+<?php
+    $r = new App\Helpers\Role;
+?>
 @extends('../nav')
 
 @section('content')
 <section>
     <div class="container">
-        <div class="col-5 col-sm-8 cent">
+        <div class="col-sm-8 cent">
             <div class="row text-left">
                 <div class="card card-light form-card col-12">
-                    <p><a href="/orders">订单报备</a> / {{ $record->product->name }} {{ $record->created_at }}</p>
+                    <p><a href="/orders">订单报备</a> / {{ $record->product->name }} </p>
+                    {{ $record->created_at }}<br>
                     <strong>{{$record->customer->name}}</strong>
                     <strong>{{$record->customer->mobile}}</strong>
-                    @if($record->bb && $record->bb->bb)
+                    @if($record->bb)
                         @foreach(json_decode($record->bb->info, true) as $key => $value)
                             @if($key == 'video')
                                 <br>
@@ -19,9 +23,11 @@
                                     <source src="{{ asset('storage/'.$value) }}" type="video/mp4" />
                                 </video>
                                 <br>
-                            @else
+                            @elseif(Storage::has($value))
                                 <br>
                                 <img class="rounded img-thumbnail" src="{{ asset('storage/'.$value) }}">
+                            @else
+                                <strong>密码: {{ $value }} , 使用后务必提醒用户修改!</strong>
                             @endif
 
                         @endforeach
@@ -30,8 +36,13 @@
                     @endif
                     <div class="top-pad"></div>
                     <p>
-                        <a class="btn btn-sm btn-outline-danger" href="/orders/bb/error/{{$record->id}}">无效,重新报备</a> 
-                        <a class="btn btn-sm btn-primary" href="/orders/bb/ok/{{$record->id}}">有效</a> 
+                        @if($r->locked($record->customer->id))
+                            <a class="btn btn-sm btn-success" href="/users/unlock/{{$record->customer->id}}">解除封号</a> 
+                        @else
+                            <a class="btn btn-sm btn-danger" href="/users/lock/{{$record->customer->id}}">恶意封号</a> 
+                        @endif
+                        <a class="btn btn-sm btn-outline-danger" href="/bb/check_fail/{{$record->id}}">无效</a> 
+                        <a class="btn btn-sm btn-primary" href="/bb/check_ok/{{$record->id}}">有效</a> 
                     </p>
                 </div>
             </div>

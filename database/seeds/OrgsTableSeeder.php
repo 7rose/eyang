@@ -19,7 +19,9 @@ class OrgsTableSeeder extends Seeder
             'config' => '{
                 "templet":"http://www.gbjing.cn/index.php/Home/shop_info/business_info/{shop}=/shop_id/{product}",
                 "shop":"w{7}",
-                "product":"d{4,}"
+                "product":"d{4,}",
+                "cps": {"app":"下款图","video":"视频: 必须有app内个人中心和待还款页面"},
+                "cpa": {"app":"下款图","sms":"下款短信截图"}
             }',
         ]);
         

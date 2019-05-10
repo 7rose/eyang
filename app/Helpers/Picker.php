@@ -33,15 +33,53 @@ class Picker
     }
 
     /**
-     * 过期时间
+     * 过期
      *
      */
-    public function orderValid($record)
+    public function ok($record)
     {
         $end = $record->created_at->startOfDay()->addHours(21)->addMinutes(30);
 
         return $end->gt(now()) ? $end->diffForHumans() : false;
     }
+
+    /**
+     * 报备但未审批
+     *
+     */
+    public function submit($record)
+    {
+        return isset($record->bb) && !$record->bb->check;
+    }
+
+    /**
+     * 报备但未审批
+     *
+     */
+    public function check($record)
+    {
+        return isset($record->bb) && $record->bb->check;
+    }
+
+    /**
+     * 报备结果
+     *
+     */
+    public function submitResault($record)
+    {
+        return isset($record->bb) && $record->bb->success;
+    }
+
+    /**
+     * 审批结果
+     *
+     */
+    public function checkResault($record)
+    {
+        return isset($record->bb) && $record->bb->resault;
+    }
+
+
 
 
     /**

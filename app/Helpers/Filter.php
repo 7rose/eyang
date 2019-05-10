@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Session;
 use App\Conf;
+use App\Product;
 
 /**
  * Filter
@@ -66,6 +67,33 @@ class Filter
             exit();
         }
 
+    }
+
+    /**
+     * 报备
+     *
+     */
+    public function bb($product_id)
+    {
+        $record = Product::findOrFail($product_id);
+
+        $type = $record->type->val;
+        $config = json_decode($record->org->config, true);
+
+        return count($config) && array_has($config, $type) && $config[$type] ? $config[$type] : false;
+    }
+
+    /**
+     * 报备
+     *
+     */
+    public function bbBackup($order)
+    {
+        $items = $this->bb($order->product->id);
+
+        if(!$items) return false;
+
+        return array_key_exists('video', $items);
     }
 
 }
