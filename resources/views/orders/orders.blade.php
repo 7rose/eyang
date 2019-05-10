@@ -13,7 +13,7 @@
           <div class="row text-left">
             <div class="card card-light form-card col-12">
             <h4><i class="fa fa-heart" aria-hidden="true"></i> 订单</h4>
-        @if($r->admin() || $r->boss())
+        @if($r->admin() || $r->shopBoss())
             <p><a href="/orders/create" class="btn btn-sm btn-outline-primary">+ 新订单</a></p>
         @else
             <div class="alert alert-info">尊敬的{{ Auth::user()->name }}, "报备产品" 需要您当日晚9:30前提交反馈信息! 若您超过3次不提交或者过期, 系统将自动停止为您服务, 请及时处理此类订单! 若需帮助请联系管理员, 祝您在{{ $info->show('name') }}满载而归!</div>
@@ -25,13 +25,14 @@
                     <li>
                         <div class="dropdown-divider"></div>
                         <h5>
-                        @if($r->admin() || $r->boss())
+                        @if($r->admin() || $r->shopBoss())
 
                             @if($p->ok($record))
                                 @if($p->submit($record))
                                     <a href="/bb/show/{{ $record->id }}" class="badge badge-primary">下款{{ $record->bb->success ? "成功" : "失败" }}</a>
                                 @elseif($p->check($record))
-                                    <span class="badge badge-success">报备成功</span>
+                                    <a href="/bb/show/{{ $record->id }}" class="badge badge-primary">下载资料</a>
+
                                 @else
                                     <span class="badge badge-warning">待报备</span>
                                 @endif
