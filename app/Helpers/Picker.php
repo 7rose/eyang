@@ -10,6 +10,7 @@ use App\Product;
 use App\Order;
 use App\Conf;
 use App\Helpers\Info;
+use App\Helpers\Filter;
 
 /**
  * 门店
@@ -93,7 +94,15 @@ class Picker
 
         $record = Conf::where('key', 'slide')->first();
 
-        return $record && $record->text && !$info->lackProduct(intval($record->text)) ? ['img' => $record->val, 'id' => intval($record->text), 'conf_id' => $record->id] : false;
+        return $record && $record->text && !$info->lackProduct(intval($record->text)) && $this->check(intval($record->text)) ? ['img' => $record->val, 'id' => intval($record->text), 'conf_id' => $record->id] : false;
+    }
+
+    public function check($product_id)
+    {
+        $product = Product::findOrFail($product_id);
+
+        $f = new Filter;
+        return !$product->show || !$f->onLine($product) ? false : true;
     }
 
     /**

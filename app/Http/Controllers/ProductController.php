@@ -16,6 +16,7 @@ use App\Helpers\Info;
 use App\Helpers\Link;
 use App\Helpers\Role;
 use App\Helpers\Picker;
+use App\Helpers\Filter;
 
 class ProductController extends Controller
 {
@@ -58,9 +59,12 @@ class ProductController extends Controller
      * 单个产品
      *
      */
-    public function show($id)
+    public function show($id, Filter $f)
     {
         $record = Product::findOrFail($id);
+
+        if(!$f->onLine($record)) abort('403');
+
         return view('products.show', compact('record'));
     }
 
