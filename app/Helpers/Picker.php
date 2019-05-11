@@ -104,6 +104,8 @@ class Picker
     {
         $product = Product::findOrFail($product_id);
 
+        if(!$product->show) abort('403');
+
         $this->setImage($product);
 
         return $this->slide();
