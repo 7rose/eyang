@@ -16,7 +16,7 @@
         @if($r->admin() || $r->shopBoss())
             <p><a href="/orders/create" class="btn btn-sm btn-outline-primary">+ 新订单</a></p>
         @else
-            <div class="alert alert-info">尊敬的{{ Auth::user()->name }}, "报备产品" 需要您在提示的截止日期前提交反馈信息! 若您超过3次不按时提交, 系统将自动停止为您服务, 请及时处理! 若需帮助请联系管理员, 祝您在{{ $info->show('name') }}满载而归!</div>
+            <div class="alert alert-info">尊敬的{{ Auth::user()->name }}, "报备产品" 需要您在提示的截止日期前提交反馈信息! 若您超过3次不按时提交, 系统将自动停止为您服务, 请及时处理! 若需帮助请联系客服, 祝您在{{ $info->show('name') }}满载而归!</div>
         @endif
 
         @if($records->count())
