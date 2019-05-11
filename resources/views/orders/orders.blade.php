@@ -65,7 +65,7 @@
                             <span class="badge badge-success">{{ $r->limit($record->customer->id) }}</span>
                         @endif
                     </h5>
-                        <span class="text-secondary">{{ $record->product->name }}</span> <span class="badge badge-info">下单{{ $record->created_at->diffForHumans() }}</span>
+                        <span class="text-secondary">{{ $record->product->name }}, {{ $record->created_at->diffForHumans() }}</span> 
                         @if($filter->bbTime($record->id))
                             <span class="badge badge-success">截止{{ $filter->bbTime($record->id)->diffForHumans() }}</span>
                         @endif
