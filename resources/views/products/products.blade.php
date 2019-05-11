@@ -19,7 +19,9 @@
               <!-- 轮播图片 -->
               <div class="carousel-inner">
                 <div class="carousel-item active">
+                <a href="/products/show/{{ $p->slide()['id'] }}">
                   <img src="{{ asset('storage/'.$p->slide()['img']) }}" class="img-fluid">
+                </a>
                 </div>
               </div>
             </div>
