@@ -37,7 +37,7 @@
                       <h5>
                       
                     @if($r->gt($u->id))
-                      <a href="#" class="badge badge-info"  id="dropdownMenua" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <a href="#" class="badge badge-primary"  id="dropdownMenua" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-cogs" aria-hidden="true"></i>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
