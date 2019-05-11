@@ -8,6 +8,7 @@ use App\Shop;
 use App\Role;
 use App\Org;
 use App\Order;
+use App\Product;
 use App\Helpers\Filter;
 use App\Helpers\Picker;
 
@@ -97,6 +98,14 @@ class Info
         }
 
         return $out;
+    }
+
+    // 产品未激活
+    public function lackProduct($product_id)
+    {
+        $record = Product::find($product_id);
+
+        return array_search($record->org_id, $this->lackOrgIds());
     }
 
     /**

@@ -9,6 +9,7 @@ use Storage;
 use App\Product;
 use App\Order;
 use App\Conf;
+use App\Helpers\Info;
 
 /**
  * 门店
@@ -88,9 +89,11 @@ class Picker
      */
     public function slide()
     {
+        $info = new Info;
+
         $record = Conf::where('key', 'slide')->first();
 
-        return $record && $record->text ? ['img' => $record->val, 'id' => intval($record->text), 'conf_id' => $record->id] : false;
+        return $record && $record->text && !$info->lackProduct($record->text) ? ['img' => $record->val, 'id' => intval($record->text), 'conf_id' => $record->id] : false;
     }
 
     /**
