@@ -5,6 +5,8 @@ namespace App\Helpers;
 use Session;
 use App\Conf;
 use App\Product;
+use App\Order;
+use App\Org;
 
 /**
  * Filter
@@ -75,16 +77,38 @@ class Filter
      */
     public function bb($product_id)
     {
-        $record = Product::findOrFail($product_id);
-
-        $type = $record->type->val;
-        $config = json_decode($record->org->config, true);
+        $config = $this->orgConfig($product_id);
+        $type = $this->productType($product_id);
 
         return count($config) && array_has($config, $type) && $config[$type] ? $config[$type] : false;
     }
 
     /**
-     * 报备
+     * 获取供应商配置数组
+     *
+     */
+    public function productType($product_id)
+    {
+        $record = Product::findOrFail($product_id);
+
+        return $record->type->val;
+    }
+
+    /**
+     * 获取供应商配置数组
+     *
+     */
+    public function orgConfig($product_id)
+    {
+        $record = Product::findOrFail($product_id);
+
+        $type = $record->type->val;
+
+        return json_decode($record->org->config, true);
+    }
+
+    /**
+     * 当需要录制视频时,可以使用密码表单
      *
      */
     public function bbBackup($order)
@@ -94,6 +118,89 @@ class Filter
         if(!$items) return false;
 
         return array_key_exists('video', $items);
+    }
+
+    /**
+     * 报备有效
+     *
+     * @return carbon
+     */
+    public function bbTime($order_id)
+    {
+        $order = Order::findOrFail($order_id);
+
+        $config = $this->orgConfig($order->product_id);
+        $type = $this->productType($order->product_id);
+
+        if(count($config) && array_has($config, $type.'_expire')) {
+            $ex = $config[$type.'_expire'];
+
+            $end = $order->created_at->startOfDay()->addDays($ex['days'])->addHours($ex['hours'])->addMinutes($ex['minutes']);
+
+            if($end->gt(now())) return $end;
+        }
+
+        return false;
+    }
+
+    /**
+     * 报备但未审批
+     *
+     */
+    public function submit($record)
+    {
+        return isset($record->bb) && !$record->bb->check;
+    }
+
+    /**
+     * 报备但未审批
+     *
+     */
+    public function check($record)
+    {
+        return isset($record->bb) && $record->bb->check;
+    }
+
+    /**
+     * 报备结果
+     *
+     */
+    public function submitResault($record)
+    {
+        return isset($record->bb) && $record->bb->success;
+    }
+
+    /**
+     * 审批结果
+     *
+     */
+    public function checkResault($record)
+    {
+        return isset($record->bb) && $record->bb->resault;
+    }
+
+    /**
+     * 下架
+     *
+     * @return carbon
+     */
+    public function onLine($product)
+    {
+        $config = $this->orgConfig($product->id);
+        $type = $this->productType($product->id);
+
+        if(count($config) && array_has($config, $type.'_from') && array_has($config, $type.'_to')) {
+
+            $from = $config[$type.'_from'];
+            $from_time = today()->addHours($from['hours'])->addMinutes($from['minutes']);
+
+            $to = $config[$type.'_to'];
+            $to_time = today()->addHours($to['hours'])->addMinutes($to['minutes']);
+
+            if(!now()->between($from_time, $to_time)) return false;
+        }
+
+        return true;
     }
 
 }

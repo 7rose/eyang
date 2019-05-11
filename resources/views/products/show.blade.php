@@ -20,7 +20,12 @@
             <a class="pull-left" href="/"><h3 class="text-primary pull-left"><i class="fa fa-money" aria-hidden="true"></i> {{ $record->name }}</h3></a>
             </div>
                <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->errorCorrection('H')->size(180)->merge('/public/'.$record->img, .2)->margin(0)->generate($link->link($record))) !!} ">
-                <strong>¥{{ $record->quota }}</strong> 
+                <strong>
+                    ¥{{ $record->quota }} 
+                    @if($r->admin() || $r->shopBoss())
+                        ({{ $record->org->name }}-{{ $record->type->val }})
+                    @endif
+                </strong> 
                <div class="row">
                 <blockquote class="blockquote mb-5 text-left product-content">
                     <span class="badge badge-dark">芝麻分 ≥ {{ $record->zm }}</span>

@@ -58,8 +58,7 @@ class ShopController extends Controller
     {
         if(!$role->admin() && !$role->shopBoss()) abort(403);
         
-        $all = $request->all();
-        Arr::forget($all, '_token');
+        $all = $request->except(['_token']);
 
         foreach ($all as $org_id => $url) {
             if(trim($url)) {

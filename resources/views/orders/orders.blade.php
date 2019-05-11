@@ -1,7 +1,7 @@
 <?php
     $r = new App\Helpers\Role;
     $info = new App\Helpers\Info;
-    $p = new App\Helpers\Picker;
+    $filter = new App\Helpers\Filter;
 ?>
 @extends('../nav')
 
@@ -16,7 +16,7 @@
         @if($r->admin() || $r->shopBoss())
             <p><a href="/orders/create" class="btn btn-sm btn-outline-primary">+ 新订单</a></p>
         @else
-            <div class="alert alert-info">尊敬的{{ Auth::user()->name }}, "报备产品" 需要您当日晚9:30前提交反馈信息! 若您超过3次不提交或者过期, 系统将自动停止为您服务, 请及时处理此类订单! 若需帮助请联系管理员, 祝您在{{ $info->show('name') }}满载而归!</div>
+            <div class="alert alert-info">尊敬的{{ Auth::user()->name }}, "报备产品" 需要您在提示的截止日期前提交反馈信息! 若您超过3次不按时提交, 系统将自动停止为您服务, 请及时处理! 若需帮助请联系管理员, 祝您在{{ $info->show('name') }}满载而归!</div>
         @endif
 
         @if($records->count())
@@ -27,10 +27,10 @@
                         <h5>
                         @if($r->admin() || $r->shopBoss())
 
-                            @if($p->ok($record))
-                                @if($p->submit($record))
+                            @if($filter->bbTime($record->id))
+                                @if($filter->submit($record))
                                     <a href="/bb/show/{{ $record->id }}" class="badge badge-primary">下款{{ $record->bb->success ? "成功" : "失败" }}</a>
-                                @elseif($p->check($record))
+                                @elseif($filter->check($record))
                                     <a href="/bb/show/{{ $record->id }}" class="badge badge-primary">下载资料</a>
 
                                 @else
@@ -42,10 +42,10 @@
                             
                         @else
 
-                            @if($p->ok($record))
-                                @if($p->submit($record))
+                            @if($filter->bbTime($record->id))
+                                @if($filter->submit($record))
                                     <span class="badge badge-warning">待审核</span>
-                                @elseif($p->check($record))
+                                @elseif($filter->check($record))
                                     <span class="badge badge-success">报备成功</span>
                                 @else
                                     <a href="javascript:bb({{ $record->id }})" class="badge badge-primary"><i class="fa fa-heart-o" aria-hidden="true"></i> 报备</a>
@@ -59,12 +59,16 @@
 
                         {{ $record->customer->mobile }} 
                         {{ $record->customer->name }} 
+                        
+
                         @if(!$r->limited($record->customer->id))
                             <span class="badge badge-success">{{ $r->limit($record->customer->id) }}</span>
                         @endif
                     </h5>
-                        <span class="text-secondary">{{ $record->product->name }} {{ $record->created_at->diffForHumans() }}</span>
-                        
+                        <span class="text-secondary">{{ $record->product->name }}</span> <span class="badge badge-info">下单{{ $record->created_at->diffForHumans() }}</span>
+                        @if($filter->bbTime($record->id))
+                            <span class="badge badge-success">截止{{ $filter->bbTime($record->id)->diffForHumans() }}</span>
+                        @endif
                     </li>
                 @endforeach
             </ul>

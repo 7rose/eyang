@@ -127,12 +127,12 @@ class Info
                     ->get();
                     // ->count();
         $f = new Filter;
-        $p = new Picker;
+        // $p = new Picker;
 
         $num = 0;
 
         foreach ($records as $record) {
-            if($f->bb($record->product->id) && $p->ok($record)) $num ++;
+            if($f->bb($record->product->id) && $f->bbTime($record->id)) $num ++;
         }
 
         return $num > 0 ? $num : null;

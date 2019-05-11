@@ -27,6 +27,8 @@ Route::group(['middleware' => ['login', 'state']], function () {
     Route::get('/orgs', 'OrgController@index');
     Route::get('/orgs/create', 'OrgController@create');
     Route::post('/orgs/store', 'OrgController@store');
+    Route::get('/orgs/edit/{id}', 'OrgController@edit');
+    Route::post('/orgs/update/{id}', 'OrgController@update');
 
     // 店
     Route::get('/shops', 'ShopController@index');
@@ -79,33 +81,7 @@ Route::group(['middleware' => ['login', 'state']], function () {
 
 
 Route::get('/test', function() {
-    // $n = new Carbon\Carbon;
-    
-    // // $a = today()->addHours(21)->addMinutes(30);
-    // $a = $n->tomorrow()->addHours(14)->addMinutes(30);
-
-    // echo $a;
-    // abort('403');
-    // $a = new App\Helpers\Picker;
-
-    // // $a->removeSlide();
-    // // $a->setSlide(1);
-    // $a->clearIfSlide(1);
-
-    // print_r($a->slide());
-
-    $a = [1,2,3];
-    $b =1;
-
-    $c = in_array($b, $a);
-
-    if($c) {
-        echo "yes";
-    }else{
-        echo "fuck";
-    }
-
-
+    // 
 });
 
 

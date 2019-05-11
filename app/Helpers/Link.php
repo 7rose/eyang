@@ -37,7 +37,7 @@ class Link
 
         $link = $engine->render($templet, ['shop' => $shop_code, 'product' => $product_code]);
 
-        return $link;
+        return urldecode($link);
     }
 
     /**
@@ -179,8 +179,9 @@ class Link
         // $info 以 array 形式返回跳转信息
         $info = curl_getinfo($ch);
         // 跳转后的 URL 信息
-        return $info['url'];
+        return urlencode($info['url']); # 编码链接
     }
+
 
     /**
      *

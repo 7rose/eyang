@@ -14,6 +14,7 @@
               @foreach($records as $record)
                 <blockquote class="blockquote mb-5 text-left product-content">
                   <strong>{{ $record->name }}</strong> 编码: {{ $record->code }}
+                  <a href="/orgs/edit/{{ $record->id }}" class="badge badge-danger">修改</a>
                   <ul class="list-unstyled">
                     <li><span class="badge badge-secondary">配置</span> </li>
                     <li>{{ $record->config }}</li>
