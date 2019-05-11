@@ -15,6 +15,7 @@ use App\Order;
 use App\Helpers\Info;
 use App\Helpers\Link;
 use App\Helpers\Role;
+use App\Helpers\Picker;
 
 class ProductController extends Controller
 {
@@ -237,11 +238,15 @@ class ProductController extends Controller
      * 下架
      *
      */
-    public function off($id, Role $role)
+    public function off($id, Role $role, Picker $p)
     {
         if(!$role->admin() && !$role->issuer()) abort(403);
 
         $target = Product::findOrFail($id);
+
+        // 清理明星
+        $p->clearIfSlide($id);
+
         $target->update([
             'show' => false,
         ]);
@@ -252,8 +257,10 @@ class ProductController extends Controller
      * 删除
      *
      */
-    public function delete($id)
+    public function delete($id, Role $role, Picker $p)
     {
+        if(!$role->admin() && !$role->issuer()) abort('403');
+
         $target = Product::findOrFail($id);
 
         $order = Order::where('product_id', $id)
@@ -265,11 +272,36 @@ class ProductController extends Controller
 
         if($target->img) unlink($target->img);
 
+        $p->clearIfSlide($id);
+
         $target->delete();
 
         return redirect()->back();
     }
 
+    /**
+     * 设置为明星
+     *
+     */
+    public function slide($id, Role $role, Picker $p)
+    {
+        if(!$role->admin() && !$role->issuer()) abort('403');
+
+        $p->setSlide($id);
+        return redirect('/');
+    }
+
+    /**
+     * 设置为明星
+     *
+     */
+    public function removeSlide(Role $role, Picker $p)
+    {
+        if(!$role->admin() && !$role->issuer()) abort('403');
+
+        $p->removeSlide();
+        return redirect('/');
+    }
 
     /**
      * 

@@ -1,6 +1,7 @@
 <?php
   $info = new App\Helpers\Info;
   $role = new App\Helpers\Role;
+  $p = new App\Helpers\Picker;
 ?>
 <!DOCTYPE html>
 <html>
@@ -62,10 +63,11 @@
                 <a class="dropdown-item menu-text" href="/orgs"><i class="fa fa-cubes" aria-hidden="true"></i> 供应商</a>
                 @endif
 
-
-
                 @if($role->issuer())
                 <a class="dropdown-item menu-text" href="/products/create"><i class="fa fa-money" aria-hidden="true"></i> 发布产品</a>
+                 @if($p->slide())
+                  <a class="dropdown-item menu-text" href="/products/remove_slide"><i class="fa fa-star" aria-hidden="true"></i> 删除明星</a>
+                 @endif
                 @endif
 
                 @if($role->shopBoss($info->id()) && count($info->lackOrgIds())) 

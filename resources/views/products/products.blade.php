@@ -9,9 +9,22 @@
 
 
 <section>
-
     <div class="container">
+    
+
     <div class="row">
+        @if($p->slide())
+
+            <div id="demo" class="carousel slide" data-ride="carousel"> 
+              <!-- 轮播图片 -->
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="{{ asset('storage/'.$p->slide()['img']) }}" class="img-fluid">
+                </div>
+              </div>
+            </div>
+        
+        @endif
 
         @if(isset($records) && $records->count())
             @foreach($records as $record)
@@ -36,6 +49,8 @@
                         <strong>{{ $product->name }}</strong>
                         @if($r->issuer())
                             <br>
+
+                            <a href="/products/slide/{{ $product->id }}" class="badge badge-warning"><i class="fa fa-star" aria-hidden="true"></i> 明星</a>
                             @if($product->show)
                                 <a href="/products/off/{{ $product->id }}" class="badge badge-warning"><i class="fa fa-fire" aria-hidden="true"></i> 下架</a>
                             @else

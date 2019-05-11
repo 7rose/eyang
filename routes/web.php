@@ -72,17 +72,28 @@ Route::group(['middleware' => ['login', 'state']], function () {
     Route::get('/products/on/{id}', 'ProductController@on'); 
     Route::get('/products/off/{id}', 'ProductController@off'); 
     Route::get('/products/delete/{id}', 'ProductController@delete'); 
+    Route::get('/products/slide/{id}', 'ProductController@slide'); 
+    Route::get('/products/remove_slide', 'ProductController@removeSlide'); 
 
 });
 
 
 Route::get('/test', function() {
-    $n = new Carbon\Carbon;
+    // $n = new Carbon\Carbon;
     
-    // $a = today()->addHours(21)->addMinutes(30);
-    $a = $n->tomorrow()->addHours(14)->addMinutes(30);
+    // // $a = today()->addHours(21)->addMinutes(30);
+    // $a = $n->tomorrow()->addHours(14)->addMinutes(30);
 
-    echo $a;
+    // echo $a;
+    // abort('403');
+    $a = new App\Helpers\Picker;
+
+    // $a->removeSlide();
+    // $a->setSlide(1);
+    $a->clearIfSlide(1);
+
+    print_r($a->slide());
+
 
 });
 
