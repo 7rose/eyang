@@ -71,9 +71,9 @@
                       {!! $r->limit($u->id) && !$r->boss($u->id) && !$r->admin($u->id) ? '<span class="badge badge-success">'.$r->limit($u->id).'</span>' :"" !!} 
                       </h5>
 
-                      @if($r->admin() && !$r->admin($u->id) && !$r->shopBoss())
+                      @if($r->admin())
                       
-                        &nbsp &nbsp &nbsp &nbsp<span class="badge badge-secondary">{{ $u->created_at->diffForHumans() }}在 {{ $u->shop->domain }} 注册</span>
+                        &nbsp &nbsp &nbsp &nbsp<span class="text-secondary">{{ $u->created_at->diffForHumans() }}在 {{ $u->shop->domain }} 注册</span>
                       
                       @endif
 
