@@ -72,8 +72,8 @@
                       </h5>
 
                       @if($r->admin())
-                      <p class="text-right">
-                        <small class="text-secondary">{{ $u->created_at->diffForHumans() }}在{{ $u->shop->domain }}注册</small>
+                      <p class="text-center">
+                        <span class="text-secondary">{{ $u->created_at->diffForHumans() }}在{{ $u->shop->domain }}注册</span>
                       </p>
                       @endif
 
