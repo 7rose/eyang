@@ -73,7 +73,7 @@
 
                       @if($r->admin())
                       
-                        &nbsp &nbsp &nbsp &nbsp<span class="badge badge-secondary">{{ $u->created_at->diffForHumans() }}在{{ $u->shop->domain }}注册</span>
+                        &nbsp &nbsp &nbsp &nbsp<span class="badge badge-primary">{{ $u->created_at->diffForHumans() }}在 {{ $u->shop->domain }} 注册</span>
                       
                       @endif
 
