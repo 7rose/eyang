@@ -39,11 +39,27 @@ class OrgForm extends Form
             'rules' => 'required|min:3|max:100',
         ]);
 
+
         foreach ($type_array as $key => $value) {
             $this
             ->add($key, 'text', [
-                'label' => $key.': 报备字段',
+                'label' => $key.': 报备字段 ====',
                 'attr' => ['placeholder' => '{"app":"下款图", "sms":"到账短信"}'],
+                'rules' => 'min:3|max:200',
+            ])
+            ->add($key.'_expire', 'text', [
+                'label' => $key.': 报备截止',
+                'attr' => ['placeholder' => '{"day":"today", "hours":21, "minutes":30}'],
+                'rules' => 'min:3|max:200',
+            ])
+            ->add($key.'_from', 'text', [
+                'label' => $key.': 上线时间 - 起点',
+                'attr' => ['placeholder' => '{"hours":0, "minutes":1}'],
+                'rules' => 'min:3|max:200',
+            ])
+            ->add($key.'_to', 'text', [
+                'label' => $key.': 上线时间 - 终点',
+                'attr' => ['placeholder' => '{"hours":21, "minutes":0}'],
                 'rules' => 'min:3|max:200',
             ]);
         }

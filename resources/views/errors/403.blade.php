@@ -10,7 +10,6 @@
           <div class="alert alert-warning">
               <h1><i class="fa fa-ban" aria-hidden="true"></i></h1>
               无权操作
-              <a href="xn--rht832e.xn--io0a7i">入口</a>
           </div>
         </div>
     </div>
