@@ -103,9 +103,9 @@ class Info
     // 产品未激活
     public function lackProduct($product_id)
     {
-        $record = Product::find($product_id);
+        $product = Product::find($product_id);
 
-        return array_search($record->org_id, $this->lackOrgIds());
+        return in_array($product->org_id, $this->lackOrgIds());
     }
 
     /**

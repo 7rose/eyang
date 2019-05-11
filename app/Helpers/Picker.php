@@ -93,7 +93,7 @@ class Picker
 
         $record = Conf::where('key', 'slide')->first();
 
-        return $record && $record->text && !$info->lackProduct($record->text) ? ['img' => $record->val, 'id' => intval($record->text), 'conf_id' => $record->id] : false;
+        return $record && $record->text && !$info->lackProduct(intval($record->text)) ? ['img' => $record->val, 'id' => intval($record->text), 'conf_id' => $record->id] : false;
     }
 
     /**

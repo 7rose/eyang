@@ -86,13 +86,24 @@ Route::get('/test', function() {
 
     // echo $a;
     // abort('403');
-    $a = new App\Helpers\Picker;
+    // $a = new App\Helpers\Picker;
 
-    // $a->removeSlide();
-    // $a->setSlide(1);
-    $a->clearIfSlide(1);
+    // // $a->removeSlide();
+    // // $a->setSlide(1);
+    // $a->clearIfSlide(1);
 
-    print_r($a->slide());
+    // print_r($a->slide());
+
+    $a = [1,2,3];
+    $b =1;
+
+    $c = in_array($b, $a);
+
+    if($c) {
+        echo "yes";
+    }else{
+        echo "fuck";
+    }
 
 
 });
