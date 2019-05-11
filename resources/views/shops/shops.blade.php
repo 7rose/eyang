@@ -70,9 +70,11 @@
                       {!! $r->boss($u->id) ? '<span class="badge badge-primary">店主</span>' :"" !!} 
                       {!! $r->limit($u->id) && !$r->boss($u->id) && !$r->admin($u->id) ? '<span class="badge badge-success">'.$r->limit($u->id).'</span>' :"" !!} 
 
-                      </h5>
+                      @if($r->admin())
+                        <span class="badge badge-dark">{{ $u->shop->domain }}</span>
+                      @endif
 
-                    
+                      </h5>
 
                     </li>
                     

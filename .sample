@@ -9,8 +9,8 @@ https://www.jxshidiao.cn/app/index.php?i=2&c=entry&m=ewei_shopv2&do=mobile&r=mem
 {
 "cpa": {"app": "下款图", "sms": "下款短信截图"}, 
 "cpa_expire": {"days":0,"hours":21,"minutes":30},
-"cps_from": {"hours":0,"minutes":1},
-"cps_to": {"hours":21,"minutes":0},
+"cpa_from": {"hours":0,"minutes":1},
+"cpa_to": {"hours":21,"minutes":0},
 "cps": {"app": "下款图", "video": "视频: 必须有app内个人中心和待还款页面"}, 
 "cps_expire": {"days":0,"hours":21,"minutes":30},
 "cps_from": {"hours":0,"minutes":1},
@@ -31,11 +31,11 @@ https://www.jxshidiao.cn/app/index.php?i=2&c=entry&m=ewei_shopv2&do=mobile&r=mem
 吉娃娃:
 
 {
-    "cpa": {"video":"登录-下款手机号或姓名,金额-待还"},
-    "cpa_expire": {"days":1,"hours":14,"minutes":30},
-    "cps": {"video":"登录-下款手机号或姓名,金额-待还"}, 
-    "cps_expire": {"days":1,"hours":14,"minutes":30},
-    "shop": "d{5,}", 
-    "product": "d{4,}", 
-    "templet": "https%3A%2F%2Fwww.jxshidiao.cn%2Fapp%2Findex.php%3Fi%3D2%26c%3Dentry%26m%3Dewei_shopv2%26do%3Dmobile%26r%3Dmember.bdother.bdother%26c_l%3D4%26id%3D{product}%26mid%3D{shop}"
+"cpa": {"video":"登录-下款手机号或姓名,金额-待还"},
+"cpa_expire": {"days":1,"hours":14,"minutes":30},
+"cps": {"video":"登录-下款手机号或姓名,金额-待还"}, 
+"cps_expire": {"days":1,"hours":14,"minutes":30},
+"shop": "d{5,}", 
+"product": "d{4,}", 
+"templet": "https%3A%2F%2Fwww.jxshidiao.cn%2Fapp%2Findex.php%3Fi%3D2%26c%3Dentry%26m%3Dewei_shopv2%26do%3Dmobile%26r%3Dmember.bdother.bdother%26c_l%3D4%26id%3D{product}%26mid%3D{shop}"
 }
