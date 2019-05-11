@@ -72,7 +72,9 @@
                       </h5>
 
                       @if($r->admin())
-                        <span class="badge badge-dark text-right">{{ $u->created_at->diffForHumans() }}在{{ $u->shop->domain }}注册</span>
+                      <p class="text-right">
+                        <span class="badge badge-info">{{ $u->created_at->diffForHumans() }}在{{ $u->shop->domain }}注册</span>
+                      </p>
                       @endif
 
 
