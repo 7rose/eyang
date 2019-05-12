@@ -56,7 +56,7 @@
                                 @if($r->issuer())
                                     <br>({{ $product->org->name }}-{{ $product->type->val }})
                                     <br>
-                                    <a href="/products/slide/{{ $product->id }}" class="badge badge-warning"><i class="fa fa-star" aria-hidden="true"></i> 明星</a>
+                                    <a href="/products/slide/{{ $product->id }}" class="badge badge-primary"><i class="fa fa-star" aria-hidden="true"></i> 明星</a>
                                     @if($product->show)
                                         <a href="/products/off/{{ $product->id }}" class="badge badge-warning"><i class="fa fa-fire" aria-hidden="true"></i> 下架</a>
                                     @else
