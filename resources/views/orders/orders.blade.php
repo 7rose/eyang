@@ -61,7 +61,15 @@
                         {{ $record->customer->name }} 
                         
 
+                        @if(!$r->limited($record->customer->id))
+                            <span class="badge badge-success">{{ $r->limit($record->customer->id) }}</span>
+                        @endif
+                    </h5>
 
+                        <span class="text-secondary">{{ isset($record->product) ? $record->product->name : "未知产品" }}, {{ $record->created_at->diffForHumans() }}</span> 
+                        @if($filter->bbTime($record->id))
+                            <span class="badge badge-success">截止{{ $filter->bbTime($record->id)->diffForHumans() }}</span>
+                        @endif
                     </li>
                 @endforeach
             </ul>

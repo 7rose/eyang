@@ -129,12 +129,10 @@ class Filter
     {
         $order = Order::findOrFail($order_id);
 
-        try {
-            $config = $this->orgConfig($order->product_id);
-            $type = $this->productType($order->product_id);
-        } catch (Exception $e) {
-            return false;
-        }
+        if(!isset($order->product)) return false;
+
+        $config = $this->orgConfig($order->product_id);
+        $type = $this->productType($order->product_id);
         
 
         if(count($config) && array_has($config, $type.'_expire')) {
