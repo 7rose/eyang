@@ -81,7 +81,9 @@ Route::group(['middleware' => ['login', 'state']], function () {
 
 
 Route::get('/test', function() {
-    // 
+    $u = 'https://www.jxshidiao.cn/app/index.php?i=2&c=entry&m=ewei_shopv2&do=mobile&r=member.bdother.bdother&c_l=1&id=3264&mid=97289';
+
+    echo urlencode($u);
 });
 
 

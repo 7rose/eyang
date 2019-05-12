@@ -1,8 +1,9 @@
 https://www.jxshidiao.cn/app/index.php?i=2&c=entry&m=ewei_shopv2&do=mobile&r=member.bdother.bdother&c_l=4&id=3086&mid=97289
 https://www.jxshidiao.cn/app/index.php?i=2&c=entry&m=ewei_shopv2&do=mobile&r=member.bdother.bdother&c_l=4&id=3086&mid=97327
+https://www.jxshidiao.cn/app/index.php?i=2&c=entry&m=ewei_shopv2&do=mobile&r=member.bdother.bdother&c_l=1&id=3264&mid=97289
 
 https://www.jxshidiao.cn/app/index.php?i=2&c=entry&m=ewei_shopv2&do=mobile&r=member.bdother.bdother&c_l=4&id={product}&mid={shop}
-
+https%3A%2F%2Fwww.jxshidiao.cn%2Fapp%2Findex.php%3Fi%3D2%26c%3Dentry%26m%3Dewei_shopv2%26do%3Dmobile%26r%3Dmember.bdother.bdother%26c_l%3D1%26id%3D{product}%26mid%3D{shop}
 
 融知道:
 
@@ -37,5 +38,5 @@ https://www.jxshidiao.cn/app/index.php?i=2&c=entry&m=ewei_shopv2&do=mobile&r=mem
 "cps_expire": {"days":1,"hours":14,"minutes":30},
 "shop": "d{5,}", 
 "product": "d{4,}", 
-"templet": "https%3A%2F%2Fwww.jxshidiao.cn%2Fapp%2Findex.php%3Fi%3D2%26c%3Dentry%26m%3Dewei_shopv2%26do%3Dmobile%26r%3Dmember.bdother.bdother%26c_l%3D4%26id%3D{product}%26mid%3D{shop}"
+"templet": "https%3A%2F%2Fwww.jxshidiao.cn%2Fapp%2Findex.php%3Fi%3D2%26c%3Dentry%26m%3Dewei_shopv2%26do%3Dmobile%26r%3Dmember.bdother.bdother%26c_l%3D1%26id%3D{product}%26mid%3D{shop}"
 }
