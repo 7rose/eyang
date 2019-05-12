@@ -25,51 +25,14 @@
                     <li>
                         <div class="dropdown-divider"></div>
                         <h5>
-                        @if($r->admin() || $r->shopBoss())
-
-                            @if($filter->bbTime($record->id))
-                                @if($filter->submit($record))
-                                    <a href="/bb/show/{{ $record->id }}" class="badge badge-primary">下款{{ $record->bb->success ? "成功" : "失败" }}</a>
-                                @elseif($filter->check($record))
-                                    <a href="/bb/show/{{ $record->id }}" class="badge badge-primary">下载资料</a>
-
-                                @else
-                                    <span class="badge badge-warning">待报备</span>
-                                @endif
-                            @else
-                                <span class="badge badge-secondary">已过期</span>
-                            @endif
-                            
-                        @else
-
-                            @if($filter->bbTime($record->id))
-                                @if($filter->submit($record))
-                                    <span class="badge badge-warning">待审核</span>
-                                @elseif($filter->check($record))
-                                    <span class="badge badge-success">报备成功</span>
-                                @else
-                                    <a href="javascript:bb({{ $record->id }})" class="badge badge-primary"><i class="fa fa-heart-o" aria-hidden="true"></i> 报备</a>
-                                @endif
-                            @else
-                                <span class="badge badge-secondary">已过期</span>
-                            @endif
-
-                        @endif
+                        
 
 
                         {{ $record->customer->mobile }} 
                         {{ $record->customer->name }} 
                         
 
-                        @if(!$r->limited($record->customer->id))
-                            <span class="badge badge-success">{{ $r->limit($record->customer->id) }}</span>
-                        @endif
-                    </h5>
 
-                        
-                        @if($filter->bbTime($record->id))
-                            <span class="badge badge-success">截止{{ $filter->bbTime($record->id)->diffForHumans() }}</span>
-                        @endif
                     </li>
                 @endforeach
             </ul>
