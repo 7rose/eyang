@@ -10,7 +10,7 @@ use App\Shop;
 use App\Helpers\Info;
 
 /**
- * 链接生成  
+ * 链接生成   
  *
  */
 class Link
@@ -149,6 +149,8 @@ class Link
         $r = str_replace("{shop}","(?<shop>\\".$conf['shop'].')',$r);
         $r = str_replace("{product}","(?<product>\\".$conf['product'].')',$r);
         $r = "/".$r."/";
+
+        // $r = strval($r);
 
         return $r;
     }

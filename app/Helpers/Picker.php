@@ -164,8 +164,8 @@ class Picker
         $real_slide = 'storage/'.$new_slide;
 
         $image = Image::make($slide_back)
-                        ->insert($slide_icon, 'top-left', 180, 60)
-                        ->insert($slide_frame, 'top-left', 180, 60)
+                        ->insert($slide_icon, 'top-left', 180, 70)
+                        ->insert($slide_frame, 'top-left', 180, 70)
                         ->save($real_slide, 85);
 
         Conf::updateOrInsert(

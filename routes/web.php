@@ -81,9 +81,29 @@ Route::group(['middleware' => ['login', 'state']], function () {
 
 
 Route::get('/test', function() {
-    $u = 'https://www.jxshidiao.cn/app/index.php?i=2&c=entry&m=ewei_shopv2&do=mobile&r=member.bdother.bdother&id=3332&mid=97289';
+    // $a = new App\Helpers\Link;
 
-    echo urlencode($u);
+    // $a->setRule(1);
+    $u = 'http://wx.weikexiu.cn/index.php/Home/shop_info/business_info/Mjk5NjY=/shop_id/3012';
+    // $u = 'https://www.jxshidiao.cn/app/index.php?i=2&c=entry&m=ewei_shopv2&do=mobile&r=member.bdother.bdother&c_l=1&id=3264&mid=97289';
+
+    $url = urlencode($u);
+
+    echo $url;
+
+    // $r = 'https%3A%2F%2Fwww.jxshidiao.cn%2Fapp%2Findex.php%3Fi%3D{param}%26id%3D{product}%26mid%3D{shop}';
+    // $url = 'https%3A%2F%2Fwww.jxshidiao.cn%2Fapp%2Findex.php%3Fi%3D{param}%26id%3D1111%26mid%3D55555';
+
+    // // $r = str_replace("/","\/",$r);
+    // // $r = str_replace("{param}","(?<param>\\".'.{5,}'.')',$r);
+    // $r = str_replace("{shop}","(?<shop>\\".'d{5,}'.')',$r);
+    // $r = str_replace("{product}","(?<product>\\".'d{4,}'.')',$r);
+    // $r = "/".$r."/";
+
+    // preg_match_all($r,$url, $array); 
+
+    // echo $array['shop'][0];
+    // print_r($array);
 });
 
 
