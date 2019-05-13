@@ -19,7 +19,7 @@ class ShopController extends Controller
     use FormBuilderTrait;
 
     /**
-     * 列表
+     * 列表 
      *
      */
     public function index(Info $info, Role $role)

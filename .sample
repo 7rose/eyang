@@ -10,6 +10,22 @@ https://www.jxshidiao.cn/app/index.php?i=2&c=entry&m=ewei_shopv2&do=mobile&r=mem
 
 https://www.jxshidiao.cn/app/index.php?i=2&c=entry&m=ewei_shopv2&do=mobile&r=member.bdother.bdother&c_l=1&id=3264&mid=97289
 
+吉娃娃:
+
+{
+"cpa": {"video":"登录-下款手机号或姓名,金额-待还"},
+"cpa_expire": {"days":1,"hours":14,"minutes":30},
+"cps": {"video":"登录-下款手机号或姓名,金额-待还"}, 
+"cps_expire": {"days":1,"hours":14,"minutes":30},
+"shop": "d{5,}", 
+"param": ".{4,}", 
+"product": "d{4,}", 
+"templet": "https%3A%2F%2Fwww.jxshidiao.cn%2Fapp%2Findex.php%3F{param}%26id%3D{product}%26mid%3D{shop}"
+}
+
+
+http://www.gbjing.cn/index.php/Home/shop_info/business_info/MTYwMjg=/shop_id/3032
+
 
 融知道:
 
@@ -24,27 +40,19 @@ https://www.jxshidiao.cn/app/index.php?i=2&c=entry&m=ewei_shopv2&do=mobile&r=mem
 "cps_to": {"hours":21,"minutes":0},
 "shop": "w{7}", 
 "product": "d{4,}", 
-"templet": "http%3A%2F%2Fwww.gbjing.cn%2Findex.php%2FHome%2Fshop_info%2Fbusiness_info%2F{shop}%3D%2Fshop_id%2F{product}"
+"param": ".{4,}", 
+"templet": "http%3A%2F%2Fwww.gbjing.cn%2Findex.php%2F{param}%2F{shop}%3D%2Fshop_id%2F{product}"
 }
 
+http://shmuchun.cn//loan/url/148/8658
 金银河:
 
 {
 "shop": "d{4,}", 
+"param": ".{2,}", 
 "product": "d{2,}", 
-"templet": "http%3A%2F%2Fshmuchun.cn%2F%2Floan%2Furl%2F{product}%2F{shop}"
+"templet": "http%3A%2F%2Fshmuchun.cn%2F{param}%2F{product}%2F{shop}"
 }
 
-吉娃娃:
 
-{
-"cpa": {"video":"登录-下款手机号或姓名,金额-待还"},
-"cpa_expire": {"days":1,"hours":14,"minutes":30},
-"cps": {"video":"登录-下款手机号或姓名,金额-待还"}, 
-"cps_expire": {"days":1,"hours":14,"minutes":30},
-"shop": "d{5,}", 
-"product": "d{4,}", 
-"templet": "https%3A%2F%2Fwww.jxshidiao.cn%2Fapp%2Findex.php%3Fi%3D2%26c%3Dentry%26m%3Dewei_shopv2%26do%3Dmobile%26r%3Dmember.bdother.bdother%26id%3D{product}%26mid%3D{shop}"
-}
 
-https%3A%2F%2Fwww.jxshidiao.cn%2Fapp%2Findex.php%3Fi%3D2%26c%3Dentry%26m%3Dewei_shopv2%26do%3Dmobile%26r%3Dmember.bdother.bdother%26id%3D{product}%26mid%3D{shop}

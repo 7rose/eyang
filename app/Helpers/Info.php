@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Auth;
+use Illuminate\Support\Arr;
 
 use App\Shop;
 use App\Role;
@@ -39,7 +40,7 @@ class Info
 
         $this->shop = $ex;
         $this->info = collect(json_decode($this->shop->info));
-        $this->config = collect(json_decode($this->shop->config));
+        $this->config = json_decode($this->shop->config, true);
     }
 
     /**
@@ -93,8 +94,15 @@ class Info
 
         $out = [];
 
+        $config = json_decode($this->shop->config, true);
+
         foreach ($orgs as $org) {
-            if(!$this->config->has($org->code)) array_push($out, $org->id);
+            // if(!Arr::has($config, $org->code)) echo $org->code;
+            if(!Arr::has($config, $org->code)) array_push($out, $org->id);
+
+            // echo $org->code.'<br>';
+            // if(!$this->config->has($org->code)) array_push($out, $org->id);
+            // if(!array_key_exists($org->code, $config)) array_push($out, $org->id);
         }
 
         return $out;

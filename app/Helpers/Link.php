@@ -2,106 +2,120 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Str;
+// use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 use StringTemplate\Engine;
 
 use App\Org;
-use App\Shop;
 use App\Helpers\Info;
 
 /**
- * 链接生成   
+ * 动态链接生成 
  *
  */
 class Link
 {
+    private $keys;
+
+    function __construct()
+    {
+        $this->keys = ['templet', 'product', 'shop', 'param'];
+    }
+
     /**
-     * 生成链接
+     * 生成完整链接
      *
      */
-    public function link($product)
+    public function link($product, $shop_id=0)
     {
-        $info = new Info;
-        $shop = $info->shop;
-
-        $tag = $product->org->code;
-
-        $shop_code = $this->getCode($shop->config, $tag);
-        $product_code = $this->getCode($product->config, $tag);
-
-        $templet = $this->getCode($product->org->config, 'templet');
-
-        if(!$shop_code || !$product_code || !$templet) return false;
+        $product_templet = $this->getProductTemplet($product);
+        $shop = $this->getShopCode($product->org_id, $shop_id);
 
         $engine = new Engine;
 
-        $link = $engine->render($templet, ['shop' => $shop_code, 'product' => $product_code]);
+        $link = $engine->render($product_templet, ['shop' => $shop]);
 
         return urldecode($link);
     }
 
     /**
-     * 获取josn配置
+     * 提取店编码
      *
      */
-    public function getCode($json, $key)
+    public function getShopCode($org_id, $shop_id=0)
     {
-        $jc = collect(json_decode($json));
+        $shop = $this->selectShop($shop_id);
 
-        if(!$jc->count()) return false;
-        if(!$jc->has($key)) return false;
+        $array = json_decode($shop->config, true);
 
-        return $jc[$key];
+        $org = Org::findOrFail($org_id);
+
+        return Arr::has($array, $org->code) ? $array[$org->code] : false;
+
     }
 
+    /**
+     * 提取产品模板
+     *
+     */
+    public function getProductTemplet($product)
+    {
+        // $shop = $this->selectShop($productshop_id);
+
+        $array = json_decode($product->config, true);
+
+        return (Arr::has($array, 'templet')) ? $array['templet'] : false;
+
+    }
 
     /**
-     * 更新数据库信息
+     * 储存店编码
      *
      */
     public function saveShopCode($org_id, $url, $shop_id=0)
     {
-        $info = new Info;
+        $shop = $this->selectShop($shop_id);
 
-        $target_shop_id = $shop_id === 0 ? $info->id() : $shop_id;
-
-        $shop_code = $this->getShopCode($org_id, $url);
-
-        if(!$shop_code) return false;
-
-        $target = Shop::findOrFail($target_shop_id);
+        $math = $this->getMatch($org_id, $url);
+        $shop_code = $math['shop'][0];
 
         $org = Org::findOrFail($org_id);
 
-        $target->update(['config->'.$org->code => $shop_code ]);
+        $shop->update(['config->'.$org->code => $shop_code]);
 
         return $shop_code;
+
     }
 
     /**
-     * 店编码
+     * 选择店
      *
      */
-    public function getShopCode($org_id, $url)
+    public function selectShop($shop_id=0)
     {
-        $array = $this->getMatch($org_id, $this->getRealUrl($url));
+        $info = new Info;
 
-        if(!$array) return false;
-
-        return $array['shop'][0];
+        return $shop_id === 0 ? $info->shop : Shop::findOrFail($shop_id);
     }
 
     /**
-     * 产品编码
+     * 生成产品模板
      *
      */
-    public function getProductCode($org_id, $url)
+    public function buildProductTemplet($org_id, $url)
     {
-        $array = $this->getMatch($org_id, $this->getRealUrl($url));
+        $org_config = $this->getOrgConfig($org_id);
+        $templet = $org_config['templet'];
 
-        if(!$array) return false;
+        $settings = $this->getMatch($org_id, $url);
+        $product_code = $settings['product'][0];
+        $param = $settings['param'][0];
 
-        return $array['product'][0];
+        $engine = new Engine;
+
+        $link = $engine->render($templet, ['param' => $param, 'product' => $product_code]);
+
+        return $link;
     }
 
     /**
@@ -110,47 +124,51 @@ class Link
      */
     public function getMatch($org_id, $url)
     {
-        preg_match_all($this->setRule($org_id),$url, $array); 
+        preg_match_all($this->buildPreg($org_id), $this->getUrl($url), $array); 
 
-        if(!count($array['shop']) || !count($array['product'])) return false;
+        if(!count($array['shop']) || !count($array['product']) || !count($array['param']) || !count($array['param'])) return false;
+
         return $array;
     }
-    
+
     /**
-     * 检查
+     * 获取供应商配置
      *
      */
-    public function getConfig($org_id)
+    private function getOrgConfig($org_id)
     {
-        $target = Org::findOrFail($org_id);
-        $config = collect(json_decode($target->config));
+        $org = Org::findOrFail($org_id);
 
-        $ex = $config->has(['templet', 'shop', 'product']);
+        $array = json_decode($org->config, true);
 
-        if(!$ex) return false;
-        if(!Str::contains($config['templet'], '{shop}') || !Str::contains($config['templet'], '{product}')) return false;
+        return $this->check($array) ? $array : false;
+    }
 
-        return $config;
+    /**
+     * 校验
+     *
+     */
+    private function check($array)
+    {
+        return Arr::has($array, $this->keys);
     }
 
     /**
      * 生成正则表达式
      *
      */
-    public function setRule($org_id)
+    public function buildPreg($org_id)
     {
-        $conf = $this->getConfig($org_id);
+        $conf = $this->getOrgConfig($org_id);
 
         if(!$conf) return false;
 
         $r = $conf['templet'];
 
-        $r = str_replace("/","\/",$r);
+        $r = str_replace("{param}","(?<param>".$conf['param'].')',$r);
         $r = str_replace("{shop}","(?<shop>\\".$conf['shop'].')',$r);
         $r = str_replace("{product}","(?<product>\\".$conf['product'].')',$r);
-        $r = "/".$r."/";
-
-        // $r = strval($r);
+        $r = "/^".$r."/";
 
         return $r;
     }
@@ -159,7 +177,7 @@ class Link
      * 获取真实链接
      *
      */
-    public function getRealUrl($url, $timeout=20)
+    public function getUrl($url, $timeout=20)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -183,26 +201,4 @@ class Link
         // 跳转后的 URL 信息
         return urlencode($info['url']); # 编码链接
     }
-
-
-    /**
-     *
-     *
-     */
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

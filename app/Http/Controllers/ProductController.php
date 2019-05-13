@@ -105,23 +105,17 @@ class ProductController extends Controller
         $new['created_by'] = Auth::id();
 
         try {
-            $product_code = $link->getProductCode(intval($request->org_id), $request->url);
+            $templet = $link->buildProductTemplet(intval($request->org_id), $request->url);
+            // $param = $link->getParam(intval($request->org_id), $request->url);
         } catch (Exception $e) {
             abort('403');
         }
 
-        if(!$product_code) abort('403');
+        if(!$templet) abort('403');
 
-        $org = Org::findOrFail($request->org_id);
-
-        $new['config->'.$org->code] = $product_code;
+        $new['config->templet'] = $templet;
 
         $record = Product::create($new);
-
-        // $record->update([
-        //     'config->'.$org->code => $product_code,
-        // ]);
-
 
         return view('img', compact('record'));
 
