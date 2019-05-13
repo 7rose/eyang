@@ -81,7 +81,7 @@ Route::group(['middleware' => ['login', 'state']], function () {
 
 
 Route::get('/test', function() {
- 
+    // 
 });
 
 
